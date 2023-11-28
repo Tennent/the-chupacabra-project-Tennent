@@ -42,11 +42,17 @@ async function populateQuests() {
 // Main function to connect to db and populate
 async function main() {
   try {
+    
     await mongoose.connect(dbUrl);
+
     // Here we can call the populate functions
     await populateAnimals();
     await populateQuests();
-    console.log("Database was populated succesfully. Press ctrl + C to stop the program");
+    console.log("Database was populated succesfully.");
+
+    mongoose.disconnect()
+    console.log("Disconnected from database");
+
   } catch (error) {
     console.error(error);
   }
