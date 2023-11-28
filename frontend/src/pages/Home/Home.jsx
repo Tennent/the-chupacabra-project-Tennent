@@ -1,12 +1,8 @@
-import { useState } from 'react'
-import './Home.css'
+export default function Home() {
 
-function Home() {
-
-  return (
-    <>
-    </>
-  )
+    return (
+        <div>
+            <h1>This is the main page</h1>
+        </div>
+    )
 }
-
-export default Home
