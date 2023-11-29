@@ -1,22 +1,29 @@
-.hero-details {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.title {
-    margin-top: 40px;
-    margin-bottom: 30px;
+.hero-cards {
+   display: flex;
+   align-items: center;
+   justify-content: center;
 }
 
 .hero-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+
+    background-color: rgba(48, 46, 46, 0.73);
+    border-radius: 12px;
 }
 
 .hero-card img {
     width: 300px;
     height: auto;
+}
+
+.hero-card li {
+    list-style: none;
+}
+
+.hero-card:hover {
+    border: 2px solid gold;
+    background-color: rgb(48, 46, 46);
 }
