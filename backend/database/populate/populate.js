@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import path from "path";
 import CreatureModel from '../models/CreatureModel.js';
 import QuestModel from "../models/QuestModel.js";
+import HeroModel from "../models/HeroModel.js";
 
 
 const __filename = fileURLToPath(import.meta.url); 
@@ -39,6 +40,15 @@ async function populateQuests() {
   await QuestModel.create(quests);
 }
 
+async function resetHero() {
+  const creatureFilePath = path.join(
+    __dirname,
+    "../data",
+    "hero.json"
+  );
+  await HeroModel.deleteMany({});
+}
+
 // Main function to connect to db and populate
 async function main() {
   try {
@@ -48,6 +58,7 @@ async function main() {
     // Here we can call the populate functions
     await populateCreatures();
     await populateQuests();
+    await resetHero()
     console.log("Database was populated succesfully.");
 
     mongoose.disconnect()

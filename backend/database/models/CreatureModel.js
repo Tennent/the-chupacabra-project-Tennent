@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const creatureSchema = mongoose.Schema({
-    breed: {
+    creature: {
         species: { type: String, required: true },
-        image: { type: String, required: true },
+        image: { type: String, required: false },
         home_location: { type: String, required: true }
     },
     stats: {
@@ -17,4 +17,4 @@ const creatureSchema = mongoose.Schema({
     items: []
 })
 
-export default mongoose.model('creature', creatureSchema)
+export default mongoose.model('creature', creatureSchema, 'creatures')

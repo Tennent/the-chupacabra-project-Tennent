@@ -21,4 +21,4 @@ const heroSchema = mongoose.Schema({
     items: []
 })
 
-export default mongoose.model('hero', heroSchema)
+export default mongoose.model('hero', heroSchema, 'hero')
