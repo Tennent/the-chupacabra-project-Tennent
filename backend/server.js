@@ -97,7 +97,7 @@ app.post('/api/v1/hero', async (req, res) => {
 
     try {
 
-        const { userinput, breed } = req.body
+        const { userinput, creature } = req.body
 
         // Checks if a hero is already exist
         if ((await Hero.find({})).length > 0) {
@@ -110,10 +110,10 @@ app.post('/api/v1/hero', async (req, res) => {
                 name: userinput.name,
                 gender: userinput.gender
             },
-            breed: {
-                species: breed.species,
-                image: breed.image,
-                home_location: breed.home_location
+            creature: {
+                species: creature.species,
+                image: creature.image,
+                home_location: creature.home_location
             },
             stats: {
                 level: 1,
