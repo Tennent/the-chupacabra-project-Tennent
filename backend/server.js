@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import { fileURLToPath } from 'url';
 import path from "path";
 
+import Creature from './database/models/CreatureModel.js'
+import { error } from "console";
+
 // Construct directory path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +36,23 @@ app.get('/api/v1/welcome', (req, res) => {
     try {
         res.status(200).json({ message: "Hello world" })
     } catch (error) {
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
+app.get('/api/v1/creatures', async (req, res) => {
+    try {
+        const creatures = await Creature.find({})
+
+        if (!creatures) {
+            res.status(404).json({ message: "Not found in database" })
+        }
+
+        console.log(`Response sent!`);
+        return res.status(200).json(creatures)
+
+    } catch (error) {
+        console.log(`Some error occured: ${error}`);
         return res.status(500).json({ message: "Some error occured" })
     }
 })
