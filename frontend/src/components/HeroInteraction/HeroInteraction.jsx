@@ -1,23 +1,19 @@
 import React from 'react'
-import { useSearchParams } from 'react-router-dom'
 import './HeroInteraction.css'
 
 export default function HeroInteraction({ hero }) {
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
-    const handeHeroAction = async (propertyName, statValue) => {
+    const handeHeroAction = async (propertyName, value) => {
         try {
-            setSearchParams({ propertyToUpdate: propertyName });
-            const res = fetch(`/api/v1/heroAction/${searchParams.get('propertyToUpdate')}`, {
+            const res = await fetch(`/api/v1/heroAction/${propertyName}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ newStat: statValue })
+                body: JSON.stringify({ value })
             })
             if (res.ok) {
-                console.log(`${propertyName} updated succesful!`);
+                console.log(`${propertyName} update succesful!`);
             } else {
                 console.log(`Ooops, something went wrong during ${propertyName} updating`);
             }
