@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import fs from "fs/promises";
 import { fileURLToPath } from 'url';
 import path from "path";
-import AnimalModel from '../models/AnimalModel.js';
+import CreatureModel from '../models/CreatureModel.js';
 import QuestModel from "../models/QuestModel.js";
 
 
@@ -17,15 +17,15 @@ dotenv.config({
 const dbUrl = process.env.DB_URL;
 
 // Populate functions
-async function populateAnimals() {
-  const animalFilePath = path.join(
+async function populateCreatures() {
+  const creatureFilePath = path.join(
     __dirname,
     "../data",
-    "animals.json"
+    "creatures.json"
   );
-  const animals = JSON.parse(await fs.readFile(animalFilePath));
-  await AnimalModel.deleteMany({});
-  await AnimalModel.create(animals);
+  const creatures = JSON.parse(await fs.readFile(creatureFilePath));
+  await CreatureModel.deleteMany({});
+  await CreatureModel.create(creatures);
 }
 
 async function populateQuests() {
@@ -46,7 +46,7 @@ async function main() {
     await mongoose.connect(dbUrl);
 
     // Here we can call the populate functions
-    await populateAnimals();
+    await populateCreatures();
     await populateQuests();
     console.log("Database was populated succesfully.");
 
