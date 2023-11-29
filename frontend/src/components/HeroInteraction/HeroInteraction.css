@@ -1,0 +1,27 @@
+ .selected-hero-card {
+     text-align: center;
+     width: 50vw;
+     margin: 50px;
+     padding: 30px;
+     background-color: rgba(48, 46, 46, 0.73);
+     border-radius: 12px;
+ }
+
+ .selected-hero-card img {
+     width: 300px;
+     height: auto;
+ }
+
+ .selected-hero-card li {
+     list-style: none;
+ }
+
+ .hero-stats {
+    margin: 20px;
+ }
+
+ .hero-actions {
+    display: grid;
+    grid-gap: 1rem;
+    margin-top: 15px;
+ }
