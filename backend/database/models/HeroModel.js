@@ -5,9 +5,9 @@ const heroSchema = mongoose.Schema({
         name: { type: String, required: true },
         gender: { type: String, required: true }
     },
-    breed: {
+    creature: {
         species: { type: String, required: true },
-        image: { type: String, required: true },
+        image: { type: String, required: false },
         home_location: { type: String, required: true }
     },
     stats: {
