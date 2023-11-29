@@ -1,0 +1,82 @@
+[
+    {
+        "breed": {
+            "type": "chupacabra",
+            "image": "",
+            "home_location": "Enchanted Forest"
+        },
+        "userinput": {
+            "name": "",
+            "gender": ""
+        },
+        "stats": {
+            "level": 1,
+            "xp": 0,
+            "current_hp": 100,
+            "max_hp": 100,
+            "gold": 0,
+            "mood": 50
+        },
+        "items": []
+    },
+    {
+        "breed": {
+            "type": "unicorn",
+            "image": "",
+            "home_location": "Enchanted Forest"
+        },
+        "userinput": {
+            "name": "",
+            "gender": ""
+        },
+        "stats": {
+            "level": 1,
+            "xp": 0,
+            "current_hp": 100,
+            "max_hp": 100,
+            "gold": 0,
+            "mood": 50
+        },
+        "items": []
+    },
+    {
+        "breed": {
+            "type": "gryph",
+            "image": "",
+            "home_location": "Enchanted Forest"
+        },
+        "userinput": {
+            "name": "",
+            "gender": ""
+        },
+        "stats": {
+            "level": 1,
+            "xp": 0,
+            "current_hp": 100,
+            "max_hp": 100,
+            "gold": 0,
+            "mood": 50
+        },
+        "items": []
+    },
+    {
+        "breed": {
+            "type": "dragon",
+            "image": "",
+            "home_location": "Enchanted Forest"
+        },
+        "userinput": {
+            "name": "",
+            "gender": ""
+        },
+        "stats": {
+            "level": 1,
+            "xp": 0,
+            "current_hp": 100,
+            "max_hp": 100,
+            "gold": 0,
+            "mood": 50
+        },
+        "items": []
+    }
+]
