@@ -5,7 +5,8 @@ import { fileURLToPath } from 'url';
 import path from "path";
 
 import Creature from './database/models/CreatureModel.js'
-import { error } from "console";
+import Hero from './database/models/HeroModel.js'
+import Quests from './database/models/QuestModel.js'
 
 // Construct directory path
 const __filename = fileURLToPath(import.meta.url);
@@ -50,6 +51,40 @@ app.get('/api/v1/creatures', async (req, res) => {
 
         console.log(`Response sent!`);
         return res.status(200).json(creatures)
+
+    } catch (error) {
+        console.log(`Some error occured: ${error}`);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
+app.get('/api/v1/hero', async (req, res) => {
+    try {
+        const hero = await Hero.find({})
+
+        if (!hero) {
+            res.status(404).json({ message: "Not found in database" })
+        }
+
+        console.log(`Response sent!`);
+        return res.status(200).json(hero)
+
+    } catch (error) {
+        console.log(`Some error occured: ${error}`);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
+app.get('/api/v1/quests', async (req, res) => {
+    try {
+        const quests = await Quests.find({})
+
+        if (!quests) {
+            res.status(404).json({ message: "Not found in database" })
+        }
+
+        console.log(`Response sent!`);
+        return res.status(200).json(quests)
 
     } catch (error) {
         console.log(`Some error occured: ${error}`);
