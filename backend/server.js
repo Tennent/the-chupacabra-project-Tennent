@@ -144,7 +144,7 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
         const statToUpdate = `stats.${propertyToUpdate}`
         const { value } = req.body
         console.log(propertyToUpdate);
-        if (propertyToUpdate === "gold" || propertyToUpdate === "mood" || propertyToUpdate === "current_hp") {
+        if (propertyToUpdate === "gold" || propertyToUpdate === "mood" || propertyToUpdate === "current_hp" || propertyToUpdate === "xp") {
             const hero = await Hero.findOneAndUpdate(
                 {},
                 { $set: { [statToUpdate]: value } }
