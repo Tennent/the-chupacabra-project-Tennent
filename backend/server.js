@@ -136,6 +136,34 @@ app.post('/api/v1/hero', async (req, res) => {
     }
 })
 
+app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
+    try {
+
+        // Validation
+        const propertyToUpdate = req.params.propertyToUpdate
+        const statToUpdate = `stats.${propertyToUpdate}`
+        const { value } = req.body
+        console.log(propertyToUpdate);
+        if (propertyToUpdate === "gold" || propertyToUpdate === "mood" || propertyToUpdate === "current_hp") {
+            const hero = await Hero.findOneAndUpdate(
+                {},
+                { $set: { [statToUpdate]: value } }
+            )
+            const updatedHero = await hero.save()
+            console.log(updatedHero);
+            console.log(`Response sent!`);
+            return res.status(200).json({ message: "Action registered" })
+        }
+
+        console.log(`Bad request!`);
+        return res.status(400).json({ message: "Bad request" })
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
 // Main
 async function main() {
     await mongoose.connect(dbUrl)
