@@ -11,8 +11,9 @@ export default function Navbar() {
                 </Link>
             </div>
             <div className='navbar-links'>
-                <Link to='/SelectHero'>Create A Hero</Link>
-                <Link to='/HeroDashboard'>My Heros</Link>
+                <Link to='/'>Home</Link>
+                <Link to='/SelectHero'>Select A Hero</Link>
+                <Link to='/HeroDashboard'>Hero Dashboard</Link>
                 <Link to='/login'>Login</Link>
             </div>
         </nav>
