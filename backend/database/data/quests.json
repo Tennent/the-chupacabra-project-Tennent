@@ -4,34 +4,55 @@
         "reward": "150 Gold",
         "location": "Desert of Secrets",
         "description": "Embark on an arduous expedition into the vast Desert of Secrets to uncover the long-lost ancient city buried beneath the sands.",
-        "quest_duration": "36 hours"
+        "quest_duration": "3 seconds"
     },
     {
         "name": "Guardian of the Mystic Grove",
         "reward": "120 Gold",
         "location": "Enchanted Forest",
         "description": "The mystical creatures of the Enchanted Forest are in danger. Stand guard as the temporary protector and ensure the safety of the sacred Mystic Grove.",
-        "quest_duration": "24 hours"
+        "quest_duration": "2 seconds"
     },
     {
         "name": "Go Hunting",
         "reward": "50 Gold",
         "location": "Mystical Woods",
         "description": "Venture into the mysterious and dangerous forest to hunt exotic creatures.",
-        "quest_duration": "12 hours"
+        "quest_duration": "1 seconds"
     },
     {
         "name": "Retrieve the Crystal Shard",
         "reward": "100 Gold",
         "location": "Crystal Caves",
         "description": "Embark on a perilous journey into the Crystal Caves to retrieve a valuable crystal shard.",
-        "quest_duration": "24 hours"
+        "quest_duration": "2 seconds"
     },
     {
         "name": "Rescue the Enchanted Griffin",
         "reward": "75 Gold",
-        "location": "Mystical Mountains",
+        "location": "Mighty Mountains",
         "description": "A majestic Griffin is in distress. Journey to the Mystical Mountains and rescue the enchanted creature from a magical trap.",
-        "quest_duration": "18 hours"
+        "quest_duration": "3 seconds"
+    },
+    {
+        "name": "Retrieve the Frozen Relic",
+        "reward": "120 Gold",
+        "location": "Eternal Ice Peaks",
+        "description": "Brave the chilling winds and treacherous terrain of the Eternal Ice Peaks to retrieve a mysterious frozen relic.",
+        "quest_duration": "4 seconds"
+    },
+    {
+        "name": "Uncover the Secrets of the Whispering Swamps",
+        "reward": "80 Gold",
+        "location": "Whispering Swamps",
+        "description": "Explore the mystical Whispering Swamps and uncover the ancient secrets hidden within the eerie mist.",
+        "quest_duration": "2 seconds"
+    },
+    {
+        "name": "Ascend the Celestial Tower",
+        "reward": "150 Gold",
+        "location": "Celestial Plateau",
+        "description": "Embark on a challenging journey to ascend the mystical Celestial Tower and claim a legendary artifact at its summit.",
+        "quest_duration": "5 seconds"
     }
 ]
