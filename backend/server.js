@@ -65,7 +65,7 @@ app.get('/api/v1/hero', async (req, res) => {
         const hero = await Hero.find({})
 
         if (!hero) {
-            res.status(404).json({ message: "Not found in database" })
+            res.status(404).json({ hero: {}, message: "Not found in database" })
         }
 
         console.log(`Response sent!`);
@@ -141,7 +141,7 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
     try {
         //Extract data from the request
         const propertyToUpdate = req.params.propertyToUpdate
-        const { value } = req.body
+        const value = parseInt(req.body.value)
 
         // Validation for stats
         if (propertyToUpdate === "gold" ||
@@ -152,7 +152,7 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
             // Extract data from the database
             const hero = (await Hero.find({}))[0]
             const maxHP = hero.stats.max_hp
-            const currentHP = hero.stats.max_hp
+            const currentHP = hero.stats.current_hp
             let newValue = hero.stats[propertyToUpdate] + value
 
             // Validation for max Health Point
@@ -167,9 +167,9 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
 
             // Response send on success
             return res.status(200).json({
-                message: (currentHP === 100) ?
+                message: (currentHP === 100 && propertyToUpdate === "current_hp") ?
                     "Your hero is at full hp" :
-                    "Action registered"
+                    "Success"
             })
         }
         // Response send on validation error and backend logs
