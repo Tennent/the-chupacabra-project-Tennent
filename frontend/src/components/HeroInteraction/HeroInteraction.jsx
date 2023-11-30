@@ -35,7 +35,7 @@ export default function HeroInteraction({ hero, setHero }) {
                 :
                 <div className='selected-hero-details'>
                     <div className='selected-hero-card'>
-                        <img src="https://static.vecteezy.com/system/resources/previews/024/241/089/original/colorful-cavalier-king-charles-spaniel-dog-cavalier-king-charles-spaniel-portrait-dog-sticker-clip-art-dog-lover-design-ai-generated-png.png" alt="hero-image" />
+                        <img src={`/images/creatures/${hero.creature.species}.png`} alt="hero-image" />
                         <h2>{hero.userinput.name} {`(${hero.userinput.gender})`}</h2>
                         <h3>{hero.creature.species}</h3>
 
