@@ -1,21 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './SelectHero.css';
 import HeroDetails from '../../components/HeroDetails/HeroDetails';
+import getCreatures from '../../services/fetchCreatures';
+import { getHero } from '../../services/fetchHero';
 
 export default function SelectHero() {
+
+  const navigate = useNavigate();
+
   const [creatures, setCreatures] = useState([]);
   const [selectedHero, setSelectedHero] = useState(null);
+  const [activeHero, setActiveHero] = useState(null);
 
   useEffect(() => {
-    const getCreatures = async () => {
-      try {
-        const res = await fetch('/api/v1/creatures');
-        setCreatures(await res.json());
-      } catch (err) {
-        console.error(`Error fetching creatures! ${err}`);
-      }
+    async function useEffectHandler() {
+      setCreatures(await getCreatures());
+      setActiveHero((await getHero()));
     }
-    getCreatures();
+    useEffectHandler();
   }, []);
 
   const handleSelectHero = async (e) => {
@@ -26,8 +29,6 @@ export default function SelectHero() {
     hero.userinput.name = e.target.heroName.value;
     hero.userinput.gender = e.target.heroGender.value;
     setSelectedHero(hero);
-
-    console.log(selectedHero);
 
     try {
       const res = await fetch('/api/v1/hero', {
@@ -47,35 +48,41 @@ export default function SelectHero() {
 
   return (
     <>
-      {selectedHero ?
-        <div className='hero-selection'>
-          <HeroDetails creature={selectedHero} />
-          <div className='hero-form-container'>
-            <form action="submit" onSubmit={(e) => handleSelectHero(e)}>
-              <label htmlFor="heroName">
-                Name:
-                <input type="text" id='heroName' name='heroName' required={true} />
-              </label>
-              <label htmlFor="heroGender">
-                Gender:
-                <select name="heroGender" id="heroGender">
-                  <option value="Male" name="herGender">Male</option>
-                  <option value="Female" name="heroGender">Female</option>
-                </select>
-              </label>
-              <button type='submit'>Select Hero</button>
-              <button type='button' onClick={() => setSelectedHero(null)}>Back</button>
-            </form>
-          </div>
+      {activeHero ?
+        <div>
+          <h1>You already have a creature!</h1>
+          <button onClick={() => navigate('/herodashboard')}>Go To Dashboard</button>
         </div>
         :
-        <div>
-          <h1>Select A Hero!</h1>
-
-          <div className='heroes-container'>
-            {creatures.map(creature => <HeroDetails key={creature.creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
+        selectedHero ?
+          <div className='hero-selection'>
+            <HeroDetails creature={selectedHero} />
+            <div className='hero-form-container'>
+              <form action="submit" onSubmit={(e) => handleSelectHero(e)}>
+                <label htmlFor="heroName">
+                  Name:
+                  <input type="text" id='heroName' name='heroName' required={true} />
+                </label>
+                <label htmlFor="heroGender">
+                  Gender:
+                  <select name="heroGender" id="heroGender">
+                    <option value="Male" name="herGender">Male</option>
+                    <option value="Female" name="heroGender">Female</option>
+                  </select>
+                </label>
+                <button type='submit'>Select Hero</button>
+                <button type='button' onClick={() => setSelectedHero(null)}>Back</button>
+              </form>
+            </div>
           </div>
-        </div>}
+          :
+          <div>
+            <h1>Select A Hero!</h1>
+
+            <div className='heroes-container'>
+              {creatures.map(creature => <HeroDetails key={creature.creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
+            </div>
+          </div>}
     </>
   )
 }
