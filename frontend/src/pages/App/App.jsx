@@ -7,11 +7,10 @@ import Home from '../Home/Home'
 import SelectHero from '../SelectHero/SelectHero'
 import HeroDashboard from '../HeroDashboard/HeroDashboard'
 import Login from '../Login/Login'
-
 import ErrorPage from '../ErrorPage/ErrorPage'
 import Edit from '../Edit/Edit'
-import EditCreature from '../../components/EditCreature'
-import EditQuest from '../../components/EditQuest'
+import EditCreature from '../../components/EditCreature/EditCreature'
+import EditQuest from '../../components/EditQuest/EditQuest'
 
 export default function App() {
 
