@@ -141,15 +141,24 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
 
         // Validation
         const propertyToUpdate = req.params.propertyToUpdate
-        const statToUpdate = `stats.${propertyToUpdate}`
-        const { value } = req.body
-        console.log(propertyToUpdate);
         if (propertyToUpdate === "gold" || propertyToUpdate === "mood" || propertyToUpdate === "current_hp" || propertyToUpdate === "xp") {
-            const hero = await Hero.findOneAndUpdate(
+            const statToUpdate = `stats.${propertyToUpdate}`
+            const { value } = req.body
+            console.log(propertyToUpdate);
+            const valueToUpdate = (await Hero.find({}, { [statToUpdate]: 1 }))[0].stats[propertyToUpdate]
+            let newValue = valueToUpdate + value
+            console.log(valueToUpdate);
+            const maxHP = (await Hero.find({}, { "stats.max_hp": 1 }))[0].stats.max_hp
+            const currentHP = (await Hero.find({}, { "stats.current_hp": 1 }))[0].stats.current_hp
+            console.log(currentHP);
+            console.log(maxHP);
+
+            if ((newValue > maxHP) && propertyToUpdate === "current_hp") newValue = 100
+            const updatedHero = await Hero.findOneAndUpdate(
                 {},
-                { $set: { [statToUpdate]: value } }
+                { $set: { [statToUpdate]: newValue } }
             )
-            const updatedHero = await hero.save()
+            updatedHero.save()
             console.log(updatedHero);
             console.log(`Response sent!`);
             return res.status(200).json({ message: "Action registered" })
