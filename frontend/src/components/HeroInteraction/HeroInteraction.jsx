@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import './HeroInteraction.css'
 import Quest from '../Quest/Quest';
 import { getHero } from '../../services/fetchHero';
@@ -6,6 +7,7 @@ import patchHero from '../../services/patchHero';
 
 export default function HeroInteraction({ hero, setHero }) {
 
+    const navigate = useNavigate();
     const [quests, setQuests] = useState([]);
 
     const handleHeroAction = async (propertyName, value) => {
@@ -28,33 +30,39 @@ export default function HeroInteraction({ hero, setHero }) {
 
     return (
         <>
-            {quests.length > 0 ?
-                <div className='quests-container'>
-                    <Quest quests={quests} setQuests={setQuests} />
+            {hero === null || !hero ?
+                <div className='redirect-message'>
+                    <h1>No Hero Selected!</h1>
+                    <button onClick={() => navigate('/selecthero')}>Select A Hero</button>
                 </div>
                 :
-                <div className='selected-hero-details'>
-                    <div className='selected-hero-card'>
-                        <img src="https://static.vecteezy.com/system/resources/previews/024/241/089/original/colorful-cavalier-king-charles-spaniel-dog-cavalier-king-charles-spaniel-portrait-dog-sticker-clip-art-dog-lover-design-ai-generated-png.png" alt="hero-image" />
-                        <h2>{hero.userinput.name} {`(${hero.userinput.gender})`}</h2>
-                        <h3>{hero.creature.species}</h3>
-
-                        <ul className='hero-stats'>Stats:
-                            <li>LVL: {hero.stats.level}</li>
-                            <li>{hero.stats.xp} XP</li>
-                            <li>{hero.stats.current_hp} HP</li>
-                            <li>Mood: {hero.stats.mood}</li>
-                            <li>{hero.stats.gold} Gold</li>
-                        </ul>
-
-                        <div className='hero-actions'>Actions:
-                            <button type='button' onClick={() => handleHeroQuest()}>Go On Quest</button>
-                            <button type='button' onClick={() => handleHeroAction('xp', 10)}>Train</button>
-                            <button type='button' onClick={() => handleHeroAction('mood', 10)}>Pet</button>
-                            <button type='button' onClick={() => handleHeroAction('current_hp', 10)}>Feed</button>
-                        </div>
+                quests.length > 0 ?
+                    <div className='quests-container'>
+                        <Quest quests={quests} setQuests={setQuests} />
                     </div>
-                </div>}
+                    :
+                    <div className='selected-hero-details'>
+                        <div className='selected-hero-card'>
+                            <img src={`../../src/assets/images/creatures/${hero.creature.species}.png`} alt="hero-image" />
+                            <h2>{hero.userinput.name} {`(${hero.userinput.gender})`}</h2>
+                            <h3>{hero.creature.species}</h3>
+
+                            <ul className='hero-stats'>Stats:
+                                <li>LVL: {hero.stats.level}</li>
+                                <li>{hero.stats.xp} XP</li>
+                                <li>{hero.stats.current_hp} HP</li>
+                                <li>Mood: {hero.stats.mood}</li>
+                                <li>{hero.stats.gold} Gold</li>
+                            </ul>
+
+                            <div className='hero-actions'>
+                                <button type='button' onClick={() => handleHeroQuest()}>Go On Quest</button>
+                                <button type='button' onClick={() => handleHeroAction('xp', 10)}>Train</button>
+                                <button type='button' onClick={() => handleHeroAction('mood', 10)}>Pet</button>
+                                <button type='button' onClick={() => {handleHeroAction('current_hp', 10), handleHeroAction('gold', -15)}}>Feed</button>
+                            </div>
+                        </div>
+                    </div>}
         </>
     )
 }
