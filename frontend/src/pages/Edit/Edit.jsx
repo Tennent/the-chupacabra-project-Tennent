@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Edit() {
@@ -11,8 +11,9 @@ export default function Edit() {
     useEffect(() => {
         const fetchCreatures = async () => {
             try {
-                const response = await fetch("*GET-ALL-CREATURES-URL*");
+                const response = await fetch("/api/v1/creatures");
                 const creatures = await response.json();
+                console.log(creatures);
                 setCreatures(creatures);
             } catch (error) {
                 console.error("Failed to fetch creatures!", error)
@@ -20,8 +21,9 @@ export default function Edit() {
         };
         const fetchQuests = async () => {
             try {
-                const response = await fetch("*GET-ALL-QUESTS-URL");
+                const response = await fetch("/api/v1/quests");
                 const quests = await response.json();
+                console.log(quests);
                 setQuests(quests);
             } catch (error) {
                 console.error("Failed to fetch quests!", error)
@@ -45,23 +47,23 @@ export default function Edit() {
         <>
             <div>
                 <h1>Creatures:</h1>
-                {creatures.map(creature => {
+                {creatures.map(creature => (
                     <div key={creature._id}>
                         <h3>Creature ID: {creature._id}</h3>
                         <p>Species: {creature.creature.species}</p>
                         <button id={creature._id} onClick={handleEditCreatureBtn}>Edit creature</button>
                     </div>    
-                })}
+                ))}
             </div>
             <div>
                 <h1>Quests:</h1>
-                {quests.map(quest => {
+                {quests.map(quest => (
                     <div key={quest._id}>
                         <h3>Quest ID: {quest._id}</h3>
                         <p>Name: {quest.name}</p>
                         <button id={quest._id} onClick={handleEditQuestBtn}>Edit quest</button>
                     </div>    
-                })}
+                ))}
             </div>
         </>
     );
