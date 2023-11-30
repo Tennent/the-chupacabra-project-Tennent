@@ -39,7 +39,7 @@ export default function SelectHero() {
         body: JSON.stringify(selectedHero)
       })
       if (res.ok || selectedHero) {
-        alert(`You selected ${selectedHero.userinput.name} as you hero!`)
+        alert(`You selected ${selectedHero.userinput.name} as your hero!`)
         navigate('/herodashboard');
       }
     } catch (err) {
@@ -74,15 +74,17 @@ export default function SelectHero() {
                     <option value="Female" name="heroGender">Female</option>
                   </select>
                 </label>
-                <button type='submit'>Select Hero</button>
-                <button type='button' onClick={() => setSelectedHero(null)}>Back</button>
+                <div className='form-button-container'>
+                  <button type='submit'>Select Hero</button>
+                  <button type='button' onClick={() => setSelectedHero(null)}>Back</button>
+                </div>
               </form>
             </div>
           </div>
           :
           (activeHero !== null || activeHero.length > 0) ?
-            <div>
-              <h1>You already have a creature!</h1>
+            <div className='redirect-message'>
+              <h1>You already have a hero!</h1>
               <button onClick={() => navigate('/herodashboard')}>Go To Dashboard</button>
             </div>
             :
