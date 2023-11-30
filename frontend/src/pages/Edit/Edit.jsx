@@ -13,7 +13,6 @@ export default function Edit() {
             try {
                 const response = await fetch("/api/v1/creatures");
                 const creatures = await response.json();
-                console.log(creatures);
                 setCreatures(creatures);
             } catch (error) {
                 console.error("Failed to fetch creatures!", error)
@@ -23,7 +22,6 @@ export default function Edit() {
             try {
                 const response = await fetch("/api/v1/quests");
                 const quests = await response.json();
-                console.log(quests);
                 setQuests(quests);
             } catch (error) {
                 console.error("Failed to fetch quests!", error)
