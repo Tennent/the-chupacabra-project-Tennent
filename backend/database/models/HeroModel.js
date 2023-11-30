@@ -13,7 +13,7 @@ const heroSchema = mongoose.Schema({
     stats: {
         level: { type: Number, required: true },
         xp: { type: Number, required: true },
-        current_hp: { type: Number, required: true },
+        current_hp: { type: Number, required: true, max: 100 },
         max_hp: { type: Number, required: true },
         gold: { type: Number, required: true },
         mood: { type: Number, required: true }
