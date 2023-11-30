@@ -25,6 +25,7 @@ const app = express();
 
 // Middlewares
 app.use(express.json())
+app.use(express.static('public'))
 
 app.use((req, _, next) => {
     console.log(`Request method: ${req.method}`);
