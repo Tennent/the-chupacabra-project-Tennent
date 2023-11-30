@@ -139,36 +139,45 @@ app.post('/api/v1/hero', async (req, res) => {
 
 app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
     try {
-
-        // Validation
+        //Extract data from the request
         const propertyToUpdate = req.params.propertyToUpdate
-        if (propertyToUpdate === "gold" || propertyToUpdate === "mood" || propertyToUpdate === "current_hp" || propertyToUpdate === "xp") {
-            const statToUpdate = `stats.${propertyToUpdate}`
-            const { value } = req.body
-            console.log(propertyToUpdate);
-            const valueToUpdate = (await Hero.find({}, { [statToUpdate]: 1 }))[0].stats[propertyToUpdate]
-            let newValue = valueToUpdate + value
-            console.log(valueToUpdate);
-            const maxHP = (await Hero.find({}, { "stats.max_hp": 1 }))[0].stats.max_hp
-            const currentHP = (await Hero.find({}, { "stats.current_hp": 1 }))[0].stats.current_hp
-            console.log(currentHP);
-            console.log(maxHP);
+        const { value } = req.body
 
+        // Validation for stats
+        if (propertyToUpdate === "gold" ||
+            propertyToUpdate === "mood" ||
+            propertyToUpdate === "current_hp" ||
+            propertyToUpdate === "xp") {
+
+            // Extract data from the database
+            const hero = (await Hero.find({}))[0]
+            const maxHP = hero.stats.max_hp
+            const currentHP = hero.stats.max_hp
+            let newValue = hero.stats[propertyToUpdate] + value
+
+            // Validation for max Health Point
             if ((newValue > maxHP) && propertyToUpdate === "current_hp") newValue = 100
-            const updatedHero = await Hero.findOneAndUpdate(
-                {},
-                { $set: { [statToUpdate]: newValue } }
-            )
-            updatedHero.save()
-            console.log(updatedHero);
-            console.log(`Response sent!`);
-            return res.status(200).json({ message: "Action registered" })
-        }
 
-        console.log(`Bad request!`);
+            // Modify and save data on the database
+            hero.stats[propertyToUpdate] = newValue
+            await hero.save()
+
+            // Backend log messages (might use some logger program later)
+            console.log(`Response sent!\nAltered Hero:\n${hero}`);
+
+            // Response send on success
+            return res.status(200).json({
+                message: (currentHP === 100) ?
+                    "Your hero is at full hp" :
+                    "Action registered"
+            })
+        }
+        // Response send on validation error and backend logs
+        console.log(`Bad request!\nError: Validation failed, ${propertyToUpdate} is not an existing stat`);
         return res.status(400).json({ message: "Bad request" })
 
     } catch (error) {
+        // Response send on any other error and backend logs
         console.log(error);
         return res.status(500).json({ message: "Some error occured" })
     }
