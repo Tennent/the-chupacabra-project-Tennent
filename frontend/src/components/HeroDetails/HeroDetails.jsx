@@ -2,7 +2,6 @@ import React from 'react';
 import './HeroDetails.css';
 
 export default function HeroDetails({ creature, setSelectedHero }) {
-
     return (
         <div className='hero-cards'>
             <div className='hero-card' onClick={() => setSelectedHero(creature)}>
