@@ -60,7 +60,9 @@ export default function Quest({ quests, setQuests }) {
                     <h3>{selectedQuest.location}</h3>
                     <p>{selectedQuest.description}</p>
                     {countdown === '0:0' ?
-                        <button className='finish-btn' onClick={() => handleFinishQuest(selectedQuest)}>Finsih Quest</button>
+                        <div className='finish-quest-container'>
+                            <button className='finish-btn' onClick={() => handleFinishQuest(selectedQuest)}>Finsih Quest</button>
+                        </div>
                         :
                         <span className='quest-timer'>{countdown}</span>}
                 </div>
@@ -75,7 +77,7 @@ export default function Quest({ quests, setQuests }) {
                                 <p>{quest.description}</p>
                             </div>
                             <div className='quest-details-container'>
-                                <span>{quest.quest_duration} min, {quest.reward_gold} Gold</span>
+                                <span>{quest.quest_duration} sec, {quest.reward_gold} Gold</span>
                             </div>
                         </div>)}
                     </div>
