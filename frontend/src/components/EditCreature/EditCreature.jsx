@@ -5,7 +5,6 @@ export default function EditCreature(){
     
     const { creatureId } = useParams();
 
-    // const [creature, setCreature] = useState({});
     const [species, setSpecies] = useState("");
     const [image, setImage] = useState("");
     const [homeLocation, setHomeLocation] = useState("");
@@ -22,15 +21,11 @@ export default function EditCreature(){
                 try {
                     const response = await fetch(`/api/v1/creature/${creatureId}`);
                     const creature = await response.json();
-                    // setCreature(creature);
                     return creature;
                 } catch(error){
                     console.error("Failed to fetch single creature!", error);
                 }
             };
-            
-            // const creature = await fetchCreature();
-            // async function setInititalValues() {
             setSpecies((await fetchCreature()).creature.species);
             setImage((await fetchCreature()).creature.image);
             setHomeLocation((await fetchCreature()).creature.home_location);
@@ -40,18 +35,26 @@ export default function EditCreature(){
             setMaxHp((await fetchCreature()).stats.max_hp);
             setGold((await fetchCreature()).stats.gold);
             setMood((await fetchCreature()).stats.mood);
-            // }
-            // fetchCreature().then(setInititalValues);
+            // TRY THIS NEXT TIME:
+            // setCreature(fetchedCreature);
+            // setSpecies(fetchedCreature?.creature?.species || "");
+            // setImage(fetchedCreature?.creature?.image || "");
+            // setHomeLocation(fetchedCreature?.creature?.home_location || "");
+            // setLevel(fetchedCreature?.stats?.level || "");
+            // setXp(fetchedCreature?.stats?.xp || "");
+            // setCurrentHp(fetchedCreature?.stats?.current_hp || "");
+            // setMaxHp(fetchedCreature?.stats?.max_hp || "");
+            // setGold(fetchedCreature?.stats?.gold || "");
+            // setMood(fetchedCreature?.stats?.mood || "");
         }
         setInitialValues();
     }, []);
     
     async function handleEditCreature(){
         try {
-            // const response = await fetch('');
-            
+            // POST REQUEST GOES HERE WITH THE CHANGES
         } catch (error) {
-            console.log("Error happened during while trying to update", error)
+            console.log("Error happened during update", error)
         }
     }
 
