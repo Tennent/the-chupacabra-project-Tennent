@@ -35,12 +35,12 @@ export default function Edit() {
 
     function handleEditCreatureBtn(event) {
         const creatureId = event.target.id;
-        navigate(`edit/${creatureId}`);
+        navigate(`/editcreature/${creatureId}`);
     }
 
     function handleEditQuestBtn(event) {
         const questId = event.target.id;
-        navigate(`edit/${questId}`);
+        navigate(`/editquest/${questId}`);
     }
 
     return (
@@ -49,8 +49,8 @@ export default function Edit() {
                 <h1>Creatures:</h1>
                 {creatures.map(creature => (
                     <div key={creature._id}>
-                        <h3>Creature ID: {creature._id}</h3>
-                        <p>Species: {creature.creature.species}</p>
+                        <h3>Creature: {creature.creature.species}</h3>
+                        <p>ID: {creature._id}</p>
                         <button id={creature._id} onClick={handleEditCreatureBtn}>Edit creature</button>
                     </div>    
                 ))}
@@ -59,8 +59,8 @@ export default function Edit() {
                 <h1>Quests:</h1>
                 {quests.map(quest => (
                     <div key={quest._id}>
-                        <h3>Quest ID: {quest._id}</h3>
-                        <p>Name: {quest.name}</p>
+                        <h3>{quest.name}</h3>
+                        <p>Quest ID: {quest._id}</p>
                         <button id={quest._id} onClick={handleEditQuestBtn}>Edit quest</button>
                     </div>    
                 ))}
