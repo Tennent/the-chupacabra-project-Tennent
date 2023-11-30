@@ -40,6 +40,7 @@ export default function SelectHero() {
       })
       if (res.ok || selectedHero) {
         alert(`You selected ${selectedHero.userinput.name} as you hero!`)
+        navigate('/herodashboard');
       }
     } catch (err) {
       console.error(`Error saving selected hero! ${err}`);
@@ -48,13 +49,16 @@ export default function SelectHero() {
 
   return (
     <>
-      {activeHero ?
+      {selectedHero === null && (activeHero === null || !activeHero.length > 0) ?
         <div>
-          <h1>You already have a creature!</h1>
-          <button onClick={() => navigate('/herodashboard')}>Go To Dashboard</button>
+          <h1>Select A Hero!</h1>
+
+          <div className='heroes-container'>
+            {creatures.map(creature => <HeroDetails key={creature.creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
+          </div>
         </div>
         :
-        selectedHero ?
+        selectedHero !== null && (activeHero === null || !activeHero.length > 0) ?
           <div className='hero-selection'>
             <HeroDetails creature={selectedHero} />
             <div className='hero-form-container'>
@@ -76,13 +80,13 @@ export default function SelectHero() {
             </div>
           </div>
           :
-          <div>
-            <h1>Select A Hero!</h1>
-
-            <div className='heroes-container'>
-              {creatures.map(creature => <HeroDetails key={creature.creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
+          (activeHero !== null || activeHero.length > 0) ?
+            <div>
+              <h1>You already have a creature!</h1>
+              <button onClick={() => navigate('/herodashboard')}>Go To Dashboard</button>
             </div>
-          </div>}
+            :
+            null}
     </>
   )
 }
