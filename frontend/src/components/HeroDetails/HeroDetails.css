@@ -1,14 +1,14 @@
 .hero-cards {
-   display: flex;
-   align-items: center;
-   justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .hero-card {
     text-align: center;
     margin-top: 20px;
     margin-bottom: 20px;
-    padding-bottom: 20px;
+    padding: 30px;
 
     background-color: rgba(48, 46, 46, 0.73);
     border-radius: 12px;
@@ -17,6 +17,19 @@
 .hero-card img {
     width: 300px;
     height: auto;
+}
+
+.hero-card h2 {
+    color: rgb(213, 187, 38);
+}
+
+.hero-card h3 {
+    color: rgb(110, 25, 110);
+}
+
+.hero-card ul {
+    font-size: 18px;
+    margin-top: 10px;
 }
 
 .hero-card li {
