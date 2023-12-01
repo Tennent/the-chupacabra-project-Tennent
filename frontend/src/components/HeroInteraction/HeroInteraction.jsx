@@ -10,11 +10,19 @@ export default function HeroInteraction({ hero, setHero }) {
     const navigate = useNavigate();
     const [quests, setQuests] = useState([]);
 
-    const handleHeroAction = async (propertyName, value) => {
-        const data = await patchHero(propertyName, value)
+    const handleHeroAction = async (positiveEffect, positiveValue, negativeEffect, negativeValue) => {
+        const positive = await patchHero(positiveEffect, positiveValue);
+        const negative = await patchHero(negativeEffect, negativeValue);
         setHero(await getHero())
-        alert(data.message);
-    };
+
+        console.log(positive);
+
+        if (!negativeEffect && !negativeValue) {
+            alert(`Your creature gained ${positiveValue} ${positiveEffect}!`)
+        } else {
+            alert(`Your creature gained ${positiveValue} ${positiveEffect}, but lost ${negativeValue} ${negativeEffect}!`);
+        }
+    }
 
     const handleHeroQuest = async () => {
         try {
@@ -57,9 +65,9 @@ export default function HeroInteraction({ hero, setHero }) {
 
                             <div className='hero-actions'>
                                 <button type='button' onClick={() => handleHeroQuest()}>Go On Quest</button>
-                                <button type='button' onClick={() => handleHeroAction('xp', 10)}>Train</button>
-                                <button type='button' onClick={() => handleHeroAction('mood', 10)}>Pet</button>
-                                <button type='button' onClick={() => {handleHeroAction('current_hp', 10), handleHeroAction('gold', -15)}}>Feed</button>
+                                <button type='button' onClick={() => handleHeroAction('xp', 10, 'mood', -15)}>Train</button>
+                                <button type='button' onClick={() => handleHeroAction('mood', 10, undefined, undefined)}>Pet</button>
+                                <button type='button' onClick={() => handleHeroAction('current_hp', 10, 'gold', -15)}>Feed</button>
                             </div>
                         </div>
                     </div>}
