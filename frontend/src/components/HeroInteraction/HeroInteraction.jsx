@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
 import './HeroInteraction.css'
 import Quest from '../Quest/Quest';
@@ -11,18 +11,16 @@ export default function HeroInteraction({ hero, setHero }) {
     const [quests, setQuests] = useState([]);
 
     const handleHeroAction = async (positiveEffect, positiveValue, negativeEffect, negativeValue) => {
-        const positive = await patchHero(positiveEffect, positiveValue);
-        const negative = await patchHero(negativeEffect, negativeValue);
+        await patchHero(positiveEffect, positiveValue);
+        await patchHero(negativeEffect, negativeValue);
         setHero(await getHero())
-
-        console.log(positive);
 
         if (!negativeEffect && !negativeValue) {
             alert(`Your creature gained ${positiveValue} ${positiveEffect}!`)
         } else {
             alert(`Your creature gained ${positiveValue} ${positiveEffect}, but lost ${negativeValue} ${negativeEffect}!`);
         }
-    }
+    };
 
     const handleHeroQuest = async () => {
         try {
@@ -35,6 +33,13 @@ export default function HeroInteraction({ hero, setHero }) {
             console.error(`Error fetching quests! ${err}`);
         }
     };
+
+    useEffect(() => {
+        async function test() {
+            setHero(await getHero());
+        }
+        test();
+    }, [quests]);
 
     return (
         <>
