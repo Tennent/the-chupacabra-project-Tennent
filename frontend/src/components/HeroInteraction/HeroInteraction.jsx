@@ -56,9 +56,9 @@ export default function HeroInteraction({ hero, setHero }) {
                     :
                     <div className='selected-hero-details'>
                         <div className='selected-hero-card'>
-                            <img src={`../../src/assets/images/creatures/${hero.creature.species}.png`} alt="hero-image" />
+                            <img src={`../../src/assets/images/creatures/${hero.species}.png`} alt="hero-image" />
                             <h2>{hero.userinput.name} {`(${hero.userinput.gender})`}</h2>
-                            <h3>{hero.creature.species}</h3>
+                            <h3>{hero.species}</h3>
 
                             <ul className='hero-stats'>Stats:
                                 <li>LVL: {hero.stats.level}</li>
