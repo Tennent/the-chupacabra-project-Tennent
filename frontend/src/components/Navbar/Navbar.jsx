@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-export default function Navbar() {
+export default function Navbar({ user }) {
     return (
         <nav className='navbar'>
             <div className='navbar-logo'>
@@ -14,7 +14,7 @@ export default function Navbar() {
                 <Link to='/'>Home</Link>
                 <Link to='/selecthero'>Select A Hero</Link>
                 <Link to='/herodashboard'>Hero Dashboard</Link>
-                {/* <Link to='/edit'>Edit</Link> */}
+                {user !== null && user.admin ? <Link to='/edit'>Edit</Link> : null}
                 <Link to='/login'>Login</Link>
                 <Link to='/register'>Register</Link>
             </div>
