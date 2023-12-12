@@ -3,32 +3,38 @@ import { useNavigate } from 'react-router-dom';
 import './SelectHero.css';
 import HeroDetails from '../../components/HeroDetails/HeroDetails';
 import getCreatures from '../../services/fetchCreatures';
-import { getHero } from '../../services/fetchHero';
+import getUser from '../../services/getUser';
 
 export default function SelectHero({ user }) {
-
+  console.log(user);
   const navigate = useNavigate();
 
   const [creatures, setCreatures] = useState([]);
   const [selectedHero, setSelectedHero] = useState(null);
-  const [activeHero, setActiveHero] = useState(null);
+  const [activeUser, setActiveUser] = useState(null);
 
   useEffect(() => {
     async function useEffectHandler() {
       setCreatures(await getCreatures());
-      setActiveHero((await getHero()));
+      if (user && user.loggedIn) {
+        setActiveUser(await getUser(user._id));
+      }
     }
     useEffectHandler();
   }, []);
 
   const handleSelectHero = async (e) => {
-    e.preventDefault();
-    const hero = selectedHero;
 
-    hero.userinput = {};
-    hero.userinput.name = e.target.heroName.value;
-    hero.userinput.gender = e.target.heroGender.value;
-    setSelectedHero(hero);
+    e.preventDefault();
+    const messageBody = {
+      loggedIn: user.loggedIn,
+      _id: user._id,
+      userinput: {
+        name: e.target.heroName.value,
+        gender: e.target.heroGender.value
+      },
+      creature: selectedHero
+    }
 
     try {
       const res = await fetch('/api/v1/hero', {
@@ -36,10 +42,10 @@ export default function SelectHero({ user }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(selectedHero)
+        body: JSON.stringify(messageBody)
       })
       if (res.ok || selectedHero) {
-        alert(`You selected ${selectedHero.userinput.name} as your hero!`)
+        alert(`You selected ${e.target.heroName.value} as your hero!`)
         navigate('/herodashboard');
       }
     } catch (err) {
@@ -48,16 +54,25 @@ export default function SelectHero({ user }) {
   };
 
   let content = null;
-  if (selectedHero === null && (activeHero === null || !activeHero.length > 0)) {
+  if (user === null) {
+    content =
+      <div>
+        <h1>User not logged in!</h1>
+      </div>
+  } else if (!activeUser) {
+    <div>
+      <h1>Loading</h1>
+    </div>
+  } else if (selectedHero === null && !activeUser.creature) {
     content =
       <div>
         <h1>Select A Hero!</h1>
 
         <div className='heroes-container'>
-          {creatures.map(creature => <HeroDetails key={creature.creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
+          {creatures.map(creature => <HeroDetails key={creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
         </div>
       </div>
-  } else if (selectedHero !== null && (activeHero === null || !activeHero.length > 0)) {
+  } else if (selectedHero !== null && !activeUser.creature) {
     content =
       <div className='hero-selection'>
         <HeroDetails creature={selectedHero} />
@@ -81,13 +96,12 @@ export default function SelectHero({ user }) {
           </form>
         </div>
       </div>
-  } else if (activeHero !== null || activeHero.length > 0) {
+  } else if (activeUser.creature) {
     content =
       <div className='redirect-message'>
         <h1>You already have a hero!</h1>
         <button onClick={() => navigate('/herodashboard')}>Go To Dashboard</button>
       </div>
-
-    return <>{content}</>
   }
+  return <>{content}</>
 }
