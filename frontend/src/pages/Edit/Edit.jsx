@@ -1,5 +1,8 @@
+import { EditableQuests } from '../../components/EditableQuests/EditableQuests.jsx';
+import { EditableCreatures } from '../../components/EditableCreatures/EditableCreatures.jsx';
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import "./Edit.css";
 
 export default function Edit() {
     
@@ -13,7 +16,6 @@ export default function Edit() {
             try {
                 const response = await fetch("/api/v1/creatures");
                 const creatures = await response.json();
-                console.log(creatures);
                 setCreatures(creatures);
             } catch (error) {
                 console.error("Failed to fetch creatures!", error)
@@ -23,7 +25,6 @@ export default function Edit() {
             try {
                 const response = await fetch("/api/v1/quests");
                 const quests = await response.json();
-                console.log(quests);
                 setQuests(quests);
             } catch (error) {
                 console.error("Failed to fetch quests!", error)
@@ -35,36 +36,71 @@ export default function Edit() {
 
     function handleEditCreatureBtn(event) {
         const creatureId = event.target.id;
-        navigate(`edit/${creatureId}`);
+        navigate(`/editcreature/${creatureId.slice(4)}`);
     }
 
     function handleEditQuestBtn(event) {
         const questId = event.target.id;
-        navigate(`edit/${questId}`);
+        navigate(`/editquest/${questId.slice(4)}`);
     }
 
+    async function handleDeleteCreatureBtn(event){
+        const creatureId = event.target.id.slice(6);
+        const isConfirmed = window.confirm("Are you sure you want to delete this creature?");
+        if (isConfirmed){
+            try{
+                const response = await fetch(`/api/v1/deletecreature/${creatureId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+                await response.json();
+                if (response.ok){
+                    alert("Item deleted successfully!");
+                    window.location.reload();
+                } else {
+                    console.log("Item couldn't be deleted!")
+                }
+            } catch (error) {
+                console.log("An error occurred while fetching", error)
+            }
+        } else {
+            console.log("Deletion cancelled.");
+        }
+    }
+
+    async function handleDeleteQuestBtn(event){
+        const questId = event.target.id.slice(6);
+        const isConfirmed = window.confirm("Are you sure you want to delete this quest?");
+        if (isConfirmed){
+            try{
+                const response = await fetch(`/api/v1/deletequest/${questId}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                });
+                await response.json();
+                if (response.ok){
+                    alert("Item deleted successfully!");
+                    window.location.reload();
+                } else {
+                    console.log("Item couldn't be deleted!")
+                }
+            } catch (error) {
+                console.log("An error occurred while fetching", error)
+            }
+        } else {
+            console.log("Deletion cancelled.");
+        }
+    }
+
+    if (!creatures || !quests) {return <>Loading...</>}
     return (
         <>
-            <div>
-                <h1>Creatures:</h1>
-                {creatures.map(creature => (
-                    <div key={creature._id}>
-                        <h3>Creature ID: {creature._id}</h3>
-                        <p>Species: {creature.creature.species}</p>
-                        <button id={creature._id} onClick={handleEditCreatureBtn}>Edit creature</button>
-                    </div>    
-                ))}
-            </div>
-            <div>
-                <h1>Quests:</h1>
-                {quests.map(quest => (
-                    <div key={quest._id}>
-                        <h3>Quest ID: {quest._id}</h3>
-                        <p>Name: {quest.name}</p>
-                        <button id={quest._id} onClick={handleEditQuestBtn}>Edit quest</button>
-                    </div>    
-                ))}
-            </div>
+            <EditableCreatures creatures={creatures} handleEditCreatureBtn={handleEditCreatureBtn} handleDeleteCreatureBtn={handleDeleteCreatureBtn}/>
+            <EditableQuests quests={quests} handleEditQuestBtn={handleEditQuestBtn} handleDeleteQuestBtn={handleDeleteQuestBtn} />
         </>
     );
 }
