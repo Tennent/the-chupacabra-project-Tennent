@@ -184,11 +184,10 @@ app.post('/api/v1/hero', async (req, res) => {
 })
 
 // ÁT KELL ÍRNI 
-app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
+app.patch('/api/v1/heroAction/', async (req, res) => {
     try {
         //Extract data from the request
-        const propertyToUpdate = req.params.propertyToUpdate
-        const value = parseInt(req.body.value)
+        const { _id, propertyToUpdate, value } = req.body
 
         // Validation for stats
         if (propertyToUpdate === "gold" ||
@@ -197,7 +196,8 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
             propertyToUpdate === "xp") {
 
             // Extract data from the database
-            const hero = (await Hero.find({}))[0]
+            const user = await UserModel.findById(_id)
+            const hero = user.creature
             const maxHP = hero.stats.max_hp
             const currentHP = hero.stats.current_hp
             let newValue = hero.stats[propertyToUpdate] + value
@@ -207,7 +207,7 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
 
             // Modify and save data on the database
             hero.stats[propertyToUpdate] = newValue
-            await hero.save()
+            await user.save()
 
             // Backend log messages (might use some logger program later)
             console.log(`Response sent!\nAltered Hero:\n${hero}`);
