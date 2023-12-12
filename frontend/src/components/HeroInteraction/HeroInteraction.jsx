@@ -5,15 +5,15 @@ import Quest from '../Quest/Quest';
 import { getHero } from '../../services/fetchHero';
 import patchHero from '../../services/patchHero';
 
-export default function HeroInteraction({ hero, setHero }) {
+export default function HeroInteraction({ hero, setHero, user }) {
 
     const navigate = useNavigate();
     const [quests, setQuests] = useState([]);
 
     const handleHeroAction = async (positiveEffect, positiveValue, negativeEffect, negativeValue) => {
-        await patchHero(positiveEffect, positiveValue);
-        await patchHero(negativeEffect, negativeValue);
-        setHero(await getHero())
+        await patchHero(user._id, positiveEffect, positiveValue);
+        await patchHero(user._id, negativeEffect, negativeValue);
+        setHero(await getHero(user.loggedIn, user._id));
 
         if (!negativeEffect && !negativeValue) {
             alert(`Your creature gained ${positiveValue} ${positiveEffect}!`)
@@ -36,7 +36,7 @@ export default function HeroInteraction({ hero, setHero }) {
 
     useEffect(() => {
         async function test() {
-            setHero(await getHero());
+            setHero(await getHero(user.loggedIn, user._id));
         }
         test();
     }, [quests]);
@@ -51,7 +51,7 @@ export default function HeroInteraction({ hero, setHero }) {
                 :
                 quests.length > 0 ?
                     <div className='quests-container'>
-                        <Quest quests={quests} setQuests={setQuests} />
+                        <Quest quests={quests} setQuests={setQuests} user={user} />
                     </div>
                     :
                     <div className='selected-hero-details'>
