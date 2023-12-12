@@ -3,13 +3,17 @@ import HeroInteraction from '../../components/HeroInteraction/HeroInteraction';
 import './HeroDashboard.css'
 import { getHero } from '../../services/fetchHero';
 
-export default function HeroDashboard() {
+export default function HeroDashboard({ user }) {
 
   const [hero, setHero] = useState(null);
 
   useEffect(() => {
     const saveHero = async () => {
-      setHero(await getHero());
+      console.log(user._id);
+      console.log(user.loggedIn);
+      const hero = await getHero(user.loggedIn, user._id);
+      console.log(hero);
+      setHero(hero);
     }
     saveHero();
   }, [])
@@ -18,7 +22,7 @@ export default function HeroDashboard() {
     <>
       {hero !== null || hero ?
         <div className='selected-hero-container'>
-          <HeroInteraction hero={hero[0]} setHero={setHero} />
+          <HeroInteraction hero={hero} setHero={setHero} />
         </div>
         :
         null
