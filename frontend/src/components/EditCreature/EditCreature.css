@@ -7,3 +7,6 @@
     max-width: "400px";
     margin: 10px auto;
 }
+label {
+    margin: 5px auto
+}

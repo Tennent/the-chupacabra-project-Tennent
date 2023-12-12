@@ -1,59 +1,116 @@
-import { useParams } from "react-router-dom"
-
+import { useNavigate, useParams } from "react-router-dom"
+import { useState, useEffect } from "react";
+import "./EditCreature.css"
 export default function EditCreature(){
     
     const { creatureId } = useParams();
+    const navigate = useNavigate();
 
-    const [creature, setCreature] = useState();
-    const [species, setSpecies] = useState();
-    const [image, setImage] = useState();
-    const [homeLocation, setHomeLocation] = useState();
-    const [level, setLevel] = useState();
-    const [xp, setXp] = useState();
-    const [currentHp, setCurrentHp] = useState();
-    const [maxHp, setMaxHp] = useState();
-    const [gold, setGold] = useState();
-    const [mood, setMood] = useState();
+    const [loading, setLoading] = useState(true);
+    const [values, setValues] = useState({
+        creature: {
+            species: "",
+            image: "",
+            home_location: ""
+        },
+        stats: {
+            level: 0,
+            xp: 0,
+            current_hp: 0,
+            max_hp: 0,
+            gold: 0,
+            mood: 0
+        }
+    });
 
     useEffect(() => {
-        const fetchCreature = async () => {
+        const setInitialValues = async () => {
             try {
-                const response = await fetch(`api/creature/${creatureId}`);
-                const creature = await response.json();
-                setCreature(creature);
+                const response = await fetch(`/api/v1/creature/${creatureId}`);
+                const selectedCreature = await response.json();
+                setValues({
+                    creature: {
+                        species: selectedCreature.creature.species,
+                        image: selectedCreature.creature.image,
+                        home_location: selectedCreature.creature.home_location,
+                    },
+                    stats: {
+                        level: selectedCreature.stats.level,
+                        xp: selectedCreature.stats.xp,
+                        current_hp: selectedCreature.stats.current_hp,
+                        max_hp: selectedCreature.stats.max_hp,
+                        gold: selectedCreature.stats.gold,
+                        mood: selectedCreature.stats.mood
+                    }
+                })
+                setLoading(false);
             } catch(error){
                 console.error("Failed to fetch single creature!", error);
             }
-        };
-        fetchCreature();
-    }, []);
+        }
+        setInitialValues();
+    }, [creatureId]);
+
+    const handleChange = (e) => {
+        const { name, value, dataset } = e.target;
+        const category = dataset.category;
     
-    function handleEditCreature(){
-        return null; // update with `PATCH` fetch
+        setValues(prevValues => ({
+            ...prevValues,
+            [category]: {
+                ...prevValues[category],
+                [name]: value
+            }
+        }));
+    };
+
+    async function handleEditCreature(e){
+        e.preventDefault();
+        try {
+            const response = await fetch(`/api/v1/updateCreature/${creatureId}`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(values)
+            })
+            await response.json();
+            if (response.status === 200){
+                alert("Creature successfully updated!")
+            } else {
+                console.error('Update failed:', response.message);
+            }
+        } catch (error) {
+            console.log("Error happened during update", error)
+        }
     }
 
+    if (loading) return <div>Loading...</div>
+
     return (
-        <form>
-            <h2>Edit creature with ID: {creatureId}</h2>
-            <label>Species:</label>
-            <input value={creature.creature.species} placehodler={creature.creature.species} onChange={(e) => {setSpecies(e.target.value)}}/>
-            <label>Image:</label>
-            <input value={creature.creature.image} placehodler={creature.creature.image} onChange={(e) => {setImage(e.target.value)}}/>
-            <label>Home location:</label>
-            <input value={creature.creature.home_location} placehodler={creature.creature.home_location} onChange={(e) => {setHomeLocation(e.target.value)}}/>
-            <label>Level:</label>
-            <input value={creature.stats.level} placehodler={creature.stats.level} onChange={(e) => {setLevel(e.target.value)}}/>
-            <label>XP:</label>
-            <input value={creature.stats.xp} placehodler={creature.stats.xp} onChange={(e) => {setXp(e.target.value)}}/>
-            <label>Current HP:</label>
-            <input value={creature.stats.current_hp} placehodler={creature.stats.current_hp} onChange={(e) => {setCurrentHp(e.target.value)}}/>
-            <label>Max HP:</label>
-            <input value={creature.stats.max_hp} placehodler={creature.stats.max_hp} onChange={(e) => {setMaxHp(e.target.value)}}/>
-            <label>Gold:</label>
-            <input value={creature.stats.gold} placehodler={creature.stats.gold} onChange={(e) => {setGold(e.target.value)}}/>
-            <label>Mood:</label>
-            <input value={creature.stats.mood} placehodler={creature.stats.mood} onChange={(e) => {setMood(e.target.value)}}/>
+        <form onSubmit={handleEditCreature} className="container">
+            <h1>Edit creature:</h1>
+            <p>ID: {creatureId}</p>
+            <label htmlFor="species">Species:</label>
+            <input name="species" value={values.creature.species} data-category="creature" onChange={handleChange} />
+            <label htmlFor="image">Image:</label>
+            <input name="image" value={values.creature.image} data-category="creature" onChange={handleChange} />
+            <label htmlFor="homeLocation">Home location:</label>
+            <input name="homeLocation" value={values.creature.home_location} data-category="creature" onChange={handleChange} />
+            <label htmlFor="level">Level:</label>
+            <input name="level" type="number" value={values.stats.level} data-category="stats" onChange={handleChange} />
+            <label htmlFor="xp">XP:</label>
+            <input name="xp" type="number" value={values.stats.xp} data-category="stats"onChange={handleChange} />
+            <label htmlFor="currentHp">Current HP:</label>
+            <input name="currentHp" type="number" value={values.stats.current_hp} data-category="stats" onChange={handleChange} />
+            <label htmlFor="maxHp">Max HP:</label>
+            <input name="maxHp" type="number" value={values.stats.max_hp} data-category="stats" onChange={handleChange} />
+            <label htmlFor="gold">Gold:</label>
+            <input name="gold" type="number" value={values.stats.gold} data-category="stats" onChange={handleChange} />
+            <label htmlFor="mood">Mood:</label>
+            <input name="mood" type="number" value={values.stats.mood} data-category="stats" onChange={handleChange} />
             <button type="submit" onClick={handleEditCreature}>Confirm changes</button>
+            <button type="button" onClick={() => navigate("/edit")}>Back</button>
         </form>
     )
 }
