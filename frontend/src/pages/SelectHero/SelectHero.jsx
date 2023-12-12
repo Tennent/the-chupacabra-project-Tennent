@@ -5,7 +5,7 @@ import HeroDetails from '../../components/HeroDetails/HeroDetails';
 import getCreatures from '../../services/fetchCreatures';
 import { getHero } from '../../services/fetchHero';
 
-export default function SelectHero() {
+export default function SelectHero({ user }) {
 
   const navigate = useNavigate();
 
@@ -47,48 +47,47 @@ export default function SelectHero() {
     }
   };
 
-  return (
-    <>
-      {selectedHero === null && (activeHero === null || !activeHero.length > 0) ?
-        <div>
-          <h1>Select A Hero!</h1>
+  let content = null;
+  if (selectedHero === null && (activeHero === null || !activeHero.length > 0)) {
+    content =
+      <div>
+        <h1>Select A Hero!</h1>
 
-          <div className='heroes-container'>
-            {creatures.map(creature => <HeroDetails key={creature.creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
-          </div>
+        <div className='heroes-container'>
+          {creatures.map(creature => <HeroDetails key={creature.creature.species} creature={creature} setSelectedHero={setSelectedHero} />)}
         </div>
-        :
-        selectedHero !== null && (activeHero === null || !activeHero.length > 0) ?
-          <div className='hero-selection'>
-            <HeroDetails creature={selectedHero} />
-            <div className='hero-form-container'>
-              <form action="submit" onSubmit={(e) => handleSelectHero(e)}>
-                <label htmlFor="heroName">
-                  Name:
-                  <input type="text" id='heroName' name='heroName' required={true} />
-                </label>
-                <label htmlFor="heroGender">
-                  Gender:
-                  <select name="heroGender" id="heroGender">
-                    <option value="Male" name="herGender">Male</option>
-                    <option value="Female" name="heroGender">Female</option>
-                  </select>
-                </label>
-                <div className='form-button-container'>
-                  <button type='submit'>Select Hero</button>
-                  <button type='button' onClick={() => setSelectedHero(null)}>Back</button>
-                </div>
-              </form>
+      </div>
+  } else if (selectedHero !== null && (activeHero === null || !activeHero.length > 0)) {
+    content =
+      <div className='hero-selection'>
+        <HeroDetails creature={selectedHero} />
+        <div className='hero-form-container'>
+          <form action="submit" onSubmit={(e) => handleSelectHero(e)}>
+            <label htmlFor="heroName">
+              Name:
+              <input type="text" id='heroName' name='heroName' required={true} />
+            </label>
+            <label htmlFor="heroGender">
+              Gender:
+              <select name="heroGender" id="heroGender">
+                <option value="Male" name="herGender">Male</option>
+                <option value="Female" name="heroGender">Female</option>
+              </select>
+            </label>
+            <div className='form-button-container'>
+              <button type='submit'>Select Hero</button>
+              <button type='button' onClick={() => setSelectedHero(null)}>Back</button>
             </div>
-          </div>
-          :
-          (activeHero !== null || activeHero.length > 0) ?
-            <div className='redirect-message'>
-              <h1>You already have a hero!</h1>
-              <button onClick={() => navigate('/herodashboard')}>Go To Dashboard</button>
-            </div>
-            :
-            null}
-    </>
-  )
+          </form>
+        </div>
+      </div>
+  } else if (activeHero !== null || activeHero.length > 0) {
+    content =
+      <div className='redirect-message'>
+        <h1>You already have a hero!</h1>
+        <button onClick={() => navigate('/herodashboard')}>Go To Dashboard</button>
+      </div>
+
+    return <>{content}</>
+  }
 }
