@@ -198,8 +198,25 @@ app.post('/api/v1/registerUser', async (req, res) => {
         console.log(error);
         return res.status(500).json({ message: "Some error occured" })
     }
-
 })
+
+app.post("/api/v1/loginUser", async (req, res) => {
+    try {
+        const { user_name, user_password } = req.body;
+        const user = await UserModel.findOne({ user_name: user_name })
+        console.log(user);
+        const match = bcrypt.compareSync(user_password, user.hashed_password); // true
+        if (match) {
+            return res.status(200).json({ loggedIn: true, _id: user._id, user_name: user.user_name });
+        } else {
+            return res.status(401).json({ loggedIn: false });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
 // Main
 async function main() {
     await mongoose.connect(dbUrl)
@@ -208,6 +225,3 @@ async function main() {
     })
 }
 main()
-
-//test
-//const asd = bcrypt.compareSync("123", '$2b$10$FwdCYFIZ7LC0ek2Ob3ZNVOZYNpcZRgQGCPgNyCm6kRvRNcUopvjyu'); // true
