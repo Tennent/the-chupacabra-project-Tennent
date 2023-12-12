@@ -22,7 +22,7 @@ export default function HeroDashboard({ user }) {
     <>
       {hero !== null || hero ?
         <div className='selected-hero-container'>
-          <HeroInteraction hero={hero} setHero={setHero} />
+          <HeroInteraction hero={hero} setHero={setHero} user={user} />
         </div>
         :
         null
