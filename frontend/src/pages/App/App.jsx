@@ -18,11 +18,11 @@ export default function App() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Layout />}>
+                <Route path="/" element={<Layout user={user} />}>
                     <Route index element={<Home />} />
                     <Route path="selecthero" element={<SelectHero user={user} />} />
                     <Route path="herodashboard" element={<HeroDashboard user={user} />} />
-                    <Route path="login" element={<Login setUser={setUser} />} />
+                    <Route path="login" element={<Login setUser={setUser} user={user} />} />
                     <Route path="register" element={<Register />} />
                     <Route path="edit" element={<Edit />} />
                     <Route path="editcreature/:creatureId" element={<EditCreature />} />
