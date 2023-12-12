@@ -16,6 +16,7 @@ export default function Navbar() {
                 <Link to='/herodashboard'>Hero Dashboard</Link>
                 {/* <Link to='/edit'>Edit</Link> */}
                 <Link to='/login'>Login</Link>
+                <Link to='/register'>Register</Link>
             </div>
         </nav>
     )
