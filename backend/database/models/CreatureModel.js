@@ -1,11 +1,9 @@
 import mongoose from "mongoose";
 
 const creatureSchema = mongoose.Schema({
-    creature: {
-        species: { type: String, required: true },
-        image: { type: String, required: false },
-        home_location: { type: String, required: true }
-    },
+    species: { type: String, required: true },
+    image: { type: String, required: false },
+    home_location: { type: String, required: true },
     stats: {
         level: { type: Number, required: true },
         xp: { type: Number, required: true },
