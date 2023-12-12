@@ -79,22 +79,6 @@ app.get('/api/v1/creature/:id', async (req, res) => {
     }
 })
 
-app.get('/api/v1/hero', async (req, res) => {
-    try {
-        const hero = await Hero.find({})
-
-        if (!hero) {
-            res.status(404).json({ hero: {}, message: "Not found in database" })
-        }
-
-        console.log(`Response sent!`);
-        return res.status(200).json(hero)
-
-    } catch (error) {
-        console.log(`Some error occured: ${error}`);
-        return res.status(500).json({ message: "Some error occured" })
-    }
-})
 
 app.get('/api/v1/quests', async (req, res) => {
     try {
@@ -130,27 +114,53 @@ app.get('/api/v1/quests/:id', async (req, res) => {
     }
 })
 
+
+app.get('/api/v1/hero/:loggedIn/:_id', async (req, res) => {
+
+    try {
+        const { loggedIn, _id } = req.params
+        if (loggedIn === "true") {
+            const user = await UserModel.findOne({ _id: _id })
+            const hero = user.creature
+            if (!hero) {
+                return res.status(404).json({ hero: {}, message: "Not found in database" })
+            }
+
+            console.log(`Response sent!`);
+            return res.status(200).json(hero)
+        }
+
+    } catch (error) {
+        console.log(`Some error occured: ${error}`);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
 app.post('/api/v1/hero', async (req, res) => {
 
     try {
 
-        const { userinput, creature } = req.body
+        const { loggedIn, _id, userinput, creature } = req.body
 
-        // Checks if a hero is already exist
-        if ((await Hero.find({})).length > 0) {
-            console.log("Hero already exists");
+        if (!loggedIn) {
+            return res.status(401).json({ message: "User not logged in" })
+        }
+
+        const user = await UserModel.findOne({ _id: _id })
+        const hero = user.creature
+
+        if (hero) {
             return res.status(422).json({ message: "You have alredy chosen a hero" })
         }
 
-        const heroToAdd = new Hero({
+        console.log("logolva:" + creature);
+        const newHero = {
+            species: creature.species,
+            image: creature.image,
+            home_location: creature.home_location,
             userinput: {
                 name: userinput.name,
                 gender: userinput.gender
-            },
-            creature: {
-                species: creature.species,
-                image: creature.image,
-                home_location: creature.home_location
             },
             stats: {
                 level: 1,
@@ -161,11 +171,11 @@ app.post('/api/v1/hero', async (req, res) => {
                 mood: 50
             },
             items: []
-        })
+        }
 
-        const savedHero = await heroToAdd.save()
-        console.log(`Response sent!`);
-        return res.status(201).json(savedHero)
+        user.creature = { ...newHero }
+        const savedUser = await user.save()
+        return res.status(201).json(savedUser)
 
     } catch (error) {
         console.log(`Some error occured: ${error}`);
@@ -173,6 +183,7 @@ app.post('/api/v1/hero', async (req, res) => {
     }
 })
 
+// ÁT KELL ÍRNI 
 app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
     try {
         //Extract data from the request
@@ -222,7 +233,7 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
 app.patch(`/api/v1/updateCreature/:id`, async (req, res) => {
     try {
         const creatureId = req.params.id;
-        const creature = await Creature.findOne({_id: creatureId});
+        const creature = await Creature.findOne({ _id: creatureId });
 
         if (!creature) {
             res.status(404).json({ message: "Not found in database" })
@@ -243,7 +254,7 @@ app.delete(`/api/v1/deletecreature/:id`, async (req, res) => {
     try {
         await Creature.deleteOne({ _id: req.params.id });
         res.json({ message: "Item successfully deleted!" })
-    } catch (error){
+    } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to update creature!" });
     }
@@ -253,7 +264,7 @@ app.delete(`/api/v1/deletequest/:id`, async (req, res) => {
     try {
         await Quests.deleteOne({ _id: req.params.id });
         res.json({ message: "Item successfully deleted!" })
-    } catch (error){
+    } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to update creature!" });
     }
@@ -262,20 +273,20 @@ app.delete(`/api/v1/deletequest/:id`, async (req, res) => {
 app.patch(`/api/v1/updateQuest/:id`, async (req, res) => {
     try {
         const questId = req.params.id;
-        const quest = await Quests.findOne({_id: questId});
+        const quest = await Quests.findOne({ _id: questId });
 
         if (!quest) {
             res.status(404).json({ message: "Not found in database" })
         }
 
         quest.name = req.body.name,
-        quest.location = req.body.location,
-        quest.description = req.body.description,
-        quest.quest_duration = req.body.quest_duration,
-        quest.image_url = req.body.image_url,
-        quest.reward_gold = req.body.reward_gold,
-        quest.reward_xp = req.body.reward_xp,
-        quest.hp_loss = req.body.hp_loss
+            quest.location = req.body.location,
+            quest.description = req.body.description,
+            quest.quest_duration = req.body.quest_duration,
+            quest.image_url = req.body.image_url,
+            quest.reward_gold = req.body.reward_gold,
+            quest.reward_xp = req.body.reward_xp,
+            quest.hp_loss = req.body.hp_loss
 
         await quest.save();
         res.json({ message: "Update successful!", quest })
@@ -307,13 +318,28 @@ app.post("/api/v1/loginUser", async (req, res) => {
         console.log(user);
         const match = bcrypt.compareSync(user_password, user.hashed_password); // true
         if (match) {
-            return res.status(200).json({ loggedIn: true, _id: user._id, user_name: user.user_name });
+            return res.status(200).json({ loggedIn: true, admin: user.is_admin, _id: user._id, user_name: user.user_name });
         } else {
             return res.status(401).json({ loggedIn: false });
         }
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Some error occured" })
+    }
+})
+app.get("/api/v1/user/:_id", async (req, res) => {
+    try {
+        const { _id } = req.params
+        const user = await UserModel.findById(_id)
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        return res.status(200).json(user);
+
+    } catch (error) {
+        return res.status(500).json({ message: "Some error occured" })
+
     }
 })
 
