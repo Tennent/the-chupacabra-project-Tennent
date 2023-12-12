@@ -1,18 +1,18 @@
-export default async function patchHero(propToUpdate, value) {
+export default async function patchHero(_id, propertyToUpdate, value) {
     try {
-        const res = await fetch(`/api/v1/heroAction/${propToUpdate}`, {
+        const res = await fetch(`/api/v1/heroAction`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ value })
+            body: JSON.stringify({ _id, propertyToUpdate, value })
         })
 
         if (!res.ok) {
-            console.log(`Ooops, something went wrong during ${propToUpdate} updating`)
+            console.log(`Ooops, something went wrong during ${propertyToUpdate} updating`)
             return
         }
-        console.log(`${propToUpdate} update succesful!`);
+        console.log(`${propertyToUpdate} update succesful!`);
         return await res.json()
 
     } catch (err) {
