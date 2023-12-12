@@ -111,6 +111,23 @@ app.get('/api/v1/quests', async (req, res) => {
     }
 })
 
+app.get('/api/v1/quests/:id', async (req, res) => {
+    try {
+        const quest = await Quests.findById(req.params.id)
+
+        if (!quest) {
+            res.status(404).json({ message: "Not found in database" })
+        }
+
+        console.log(`Response sent!`);
+        return res.status(200).json(quest)
+
+    } catch (error) {
+        console.log(`Some error occured: ${error}`);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
 app.post('/api/v1/hero', async (req, res) => {
 
     try {
@@ -188,6 +205,72 @@ app.patch('/api/v1/heroAction/:propertyToUpdate', async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
+app.patch(`/api/v1/updateCreature/:id`, async (req, res) => {
+    try {
+        const creatureId = req.params.id;
+        const creature = await Creature.findOne({_id: creatureId});
+
+        if (!creature) {
+            res.status(404).json({ message: "Not found in database" })
+        }
+
+        creature.creature = req.body.creature;
+        creature.stats = req.body.stats;
+
+        await creature.save();
+        res.json({ message: "Update successful!", creature })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to update creature!" });
+    }
+})
+
+app.delete(`/api/v1/deletecreature/:id`, async (req, res) => {
+    try {
+        await Creature.deleteOne({ _id: req.params.id });
+        res.json({ message: "Item successfully deleted!" })
+    } catch (error){
+        console.log(error);
+        res.status(500).json({ message: "Failed to update creature!" });
+    }
+})
+
+app.delete(`/api/v1/deletequest/:id`, async (req, res) => {
+    try {
+        await Quests.deleteOne({ _id: req.params.id });
+        res.json({ message: "Item successfully deleted!" })
+    } catch (error){
+        console.log(error);
+        res.status(500).json({ message: "Failed to update creature!" });
+    }
+})
+
+app.patch(`/api/v1/updateQuest/:id`, async (req, res) => {
+    try {
+        const questId = req.params.id;
+        const quest = await Quests.findOne({_id: questId});
+
+        if (!quest) {
+            res.status(404).json({ message: "Not found in database" })
+        }
+
+        quest.name = req.body.name,
+        quest.location = req.body.location,
+        quest.description = req.body.description,
+        quest.quest_duration = req.body.quest_duration,
+        quest.image_url = req.body.image_url,
+        quest.reward_gold = req.body.reward_gold,
+        quest.reward_xp = req.body.reward_xp,
+        quest.hp_loss = req.body.hp_loss
+
+        await quest.save();
+        res.json({ message: "Update successful!", quest })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to update creature!" });
     }
 })
 
