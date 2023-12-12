@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Quests.css'
 import patchHero from '../../services/patchHero';
+// import images from '../../src/assets/images/locations'
 
 export default function Quest({ quests, setQuests }) {
 
@@ -48,7 +49,7 @@ export default function Quest({ quests, setQuests }) {
         await patchHero('xp', quest.reward_xp)
         await patchHero('current_hp', quest.hp_loss)
         alert(`Quest successful! Your creature gained ${quest.reward_gold} Gold, ${quest.reward_xp} XP and lost ${quest.hp_loss} HP`)
-        location.reload();
+        setQuests([]);
     }
 
     return (

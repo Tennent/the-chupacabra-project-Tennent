@@ -1,12 +1,14 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 import { fileURLToPath } from 'url';
 import path from "path";
 
 import Creature from './database/models/CreatureModel.js'
 import Hero from './database/models/HeroModel.js'
 import Quests from './database/models/QuestModel.js'
+import UserModel from "./database/models/UserModel.js";
 
 
 // Construct directory path
@@ -283,6 +285,21 @@ app.patch(`/api/v1/updateQuest/:id`, async (req, res) => {
     }
 })
 
+app.post('/api/v1/registerUser', async (req, res) => {
+    try {
+        const { user_name, user_password } = req.body;
+        const saltRounds = 10;
+        const hashed_password = bcrypt.hashSync(user_password, saltRounds);
+        console.log(hashed_password);
+        const newUser = await UserModel.create({ user_name, hashed_password })
+        console.log(newUser);
+        return res.status(201).json(newUser);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+
+})
 // Main
 async function main() {
     await mongoose.connect(dbUrl)
@@ -291,3 +308,6 @@ async function main() {
     })
 }
 main()
+
+//test
+//const asd = bcrypt.compareSync("123", '$2b$10$FwdCYFIZ7LC0ek2Ob3ZNVOZYNpcZRgQGCPgNyCm6kRvRNcUopvjyu'); // true
