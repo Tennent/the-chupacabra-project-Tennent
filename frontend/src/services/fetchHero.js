@@ -1,6 +1,6 @@
-const getHero = async () => {
+const getHero = async (loggedIn, _id) => {
     try {
-        const res = await fetch('/api/v1/hero')
+        const res = await fetch(`/api/v1/hero/${loggedIn}/${_id}`)
         return await res.json();
     } catch (err) {
         console.error(`Error fetching hero! ${err}`);
