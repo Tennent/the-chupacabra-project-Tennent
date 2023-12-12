@@ -1,10 +1,8 @@
 [
     {
-        "creature": {
-            "species": "chupacabra",
-            "image": "",
-            "home_location": "Mystical Woods"
-        },
+        "species": "chupacabra",
+        "image": "",
+        "home_location": "Mystical Woods",
         "userinput": {
             "name": "",
             "gender": ""
@@ -20,11 +18,9 @@
         "items": []
     },
     {
-        "creature": {
-            "species": "unicorn",
-            "image": "",
-            "home_location": "Enchanted Forest"
-        },
+        "species": "unicorn",
+        "image": "",
+        "home_location": "Enchanted Forest",
         "userinput": {
             "name": "",
             "gender": ""
@@ -40,11 +36,9 @@
         "items": []
     },
     {
-        "creature": {
-            "species": "gryph",
-            "image": "",
-            "home_location": "Desert of Secrets"
-        },
+        "species": "gryph",
+        "image": "",
+        "home_location": "Desert of Secrets",
         "userinput": {
             "name": "",
             "gender": ""
@@ -60,11 +54,9 @@
         "items": []
     },
     {
-        "creature": {
-            "species": "dragon",
-            "image": "",
-            "home_location": "Crystal Caves"
-        },
+        "species": "dragon",
+        "image": "",
+        "home_location": "Crystal Caves",
         "userinput": {
             "name": "",
             "gender": ""
