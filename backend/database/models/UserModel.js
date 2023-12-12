@@ -7,14 +7,12 @@ const userSchema = new Schema({
     is_premium: { type: Boolean, default: false },
     creature: {
         type: {
+            species: { type: String, required: true },
+            image: { type: String, required: false },
+            home_location: { type: String, required: true },
             userinput: {
                 name: { type: String, required: true },
                 gender: { type: String, required: true }
-            },
-            creature: {
-                species: { type: String, required: true },
-                image: { type: String, required: false },
-                home_location: { type: String, required: true }
             },
             stats: {
                 level: { type: Number, required: true },
