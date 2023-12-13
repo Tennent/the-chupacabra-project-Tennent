@@ -8,11 +8,9 @@ export default function EditCreature(){
 
     const [loading, setLoading] = useState(true);
     const [values, setValues] = useState({
-        creature: {
-            species: "",
-            image: "",
-            home_location: ""
-        },
+        species: "",
+        image: "",
+        home_location: "",
         stats: {
             level: 0,
             xp: 0,
@@ -29,11 +27,9 @@ export default function EditCreature(){
                 const response = await fetch(`/api/v1/creature/${creatureId}`);
                 const selectedCreature = await response.json();
                 setValues({
-                    creature: {
-                        species: selectedCreature.creature.species,
-                        image: selectedCreature.creature.image,
-                        home_location: selectedCreature.creature.home_location,
-                    },
+                    species: selectedCreature.species,
+                    image: selectedCreature.image,
+                    home_location: selectedCreature.home_location,
                     stats: {
                         level: selectedCreature.stats.level,
                         xp: selectedCreature.stats.xp,
@@ -55,13 +51,20 @@ export default function EditCreature(){
         const { name, value, dataset } = e.target;
         const category = dataset.category;
     
-        setValues(prevValues => ({
-            ...prevValues,
-            [category]: {
-                ...prevValues[category],
+        if (category) {
+            setValues(prevValues => ({
+                ...prevValues,
+                [category]: {
+                    ...prevValues[category],
+                    [name]: value
+                }
+            }));
+        } else {
+            setValues(prevValues => ({
+                ...prevValues,
                 [name]: value
-            }
-        }));
+            }))  
+        }
     };
 
     async function handleEditCreature(e){
@@ -92,11 +95,11 @@ export default function EditCreature(){
             <h1>Edit creature:</h1>
             <p>ID: {creatureId}</p>
             <label htmlFor="species">Species:</label>
-            <input name="species" value={values.creature.species} data-category="creature" onChange={handleChange} />
+            <input name="species" value={values.species} onChange={handleChange} />
             <label htmlFor="image">Image:</label>
-            <input name="image" value={values.creature.image} data-category="creature" onChange={handleChange} />
+            <input name="image" value={values.image} onChange={handleChange} />
             <label htmlFor="homeLocation">Home location:</label>
-            <input name="homeLocation" value={values.creature.home_location} data-category="creature" onChange={handleChange} />
+            <input name="homeLocation" value={values.home_location} onChange={handleChange} />
             <label htmlFor="level">Level:</label>
             <input name="level" type="number" value={values.stats.level} data-category="stats" onChange={handleChange} />
             <label htmlFor="xp">XP:</label>
