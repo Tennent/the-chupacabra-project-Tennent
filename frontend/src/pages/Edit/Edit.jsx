@@ -44,6 +44,15 @@ export default function Edit() {
         navigate(`/editquest/${questId.slice(4)}`);
     }
 
+    function handleNewCreatureBtn(event) {
+        navigate("/newcreature");
+    }
+
+    function handleNewQuestBtn(event) {
+        navigate("/newquest");
+    }
+
+
     async function handleDeleteCreatureBtn(event){
         const creatureId = event.target.id.slice(6);
         const isConfirmed = window.confirm("Are you sure you want to delete this creature?");
@@ -99,6 +108,8 @@ export default function Edit() {
     if (!creatures || !quests) {return <>Loading...</>}
     return (
         <>
+            <button onClick={handleNewCreatureBtn}>Add new creature</button>
+            <button onClick={handleNewQuestBtn}>Add new quest</button>
             <EditableCreatures creatures={creatures} handleEditCreatureBtn={handleEditCreatureBtn} handleDeleteCreatureBtn={handleDeleteCreatureBtn}/>
             <EditableQuests quests={quests} handleEditQuestBtn={handleEditQuestBtn} handleDeleteQuestBtn={handleDeleteQuestBtn} />
         </>

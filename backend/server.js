@@ -292,14 +292,34 @@ app.patch(`/api/v1/updateCreature/:id`, async (req, res) => {
             res.status(404).json({ message: "Not found in database" })
         }
 
-        creature.creature = req.body.creature;
-        creature.stats = req.body.stats;
+        creature.species = req.body.species,
+        creature.image = req.body.image,
+        creature.home_location = req.body.home_location,
+        creature.stats = req.body.stats
 
         await creature.save();
         res.json({ message: "Update successful!", creature })
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to update creature!" });
+    }
+})
+
+//Timi
+app.post(`/api/v1/newCreature`, async (req, res) => {
+    try {
+        const newCreature = new Creature({    
+            species: req.body.species,
+            image: req.body.image,
+            home_location: req.body.home_location,
+            stats: req.body.stats
+        })
+
+        await newCreature.save();
+        res.json({ message: "New creature added to the database", newCreature })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to added a new creature!" });
     }
 })
 
@@ -346,6 +366,27 @@ app.patch(`/api/v1/updateQuest/:id`, async (req, res) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Failed to update creature!" });
+    }
+})
+
+//Timi
+app.post(`/api/v1/newQuest`, async (req, res) => {
+    try {
+        const newQuest = new Quests({
+            name: req.body.name,
+            location: req.body.location,
+            description: req.body.description,
+            quest_duration: req.body.quest_duration,
+            image_url: req.body.image_url,
+            reward_gold: req.body.reward_gold,
+            reward_xp: req.body.reward_xp,
+            hp_loss: req.body.hp_loss
+        })
+        await newQuest.save();
+        res.json({ message: "New quest added to the database!", newQuest })
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: "Failed to added a new quest!" });
     }
 })
 

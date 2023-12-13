@@ -1,12 +1,12 @@
-import { useNavigate, useParams } from "react-router-dom"
-import { useState, useEffect } from "react";
-import "./EditCreature.css"
-export default function EditCreature() {
+import { useNavigate } from "react-router-dom"
+import { useState } from "react";
+import "./NewCreature.css"
 
-    const { creatureId } = useParams();
+export default function NewCreature() {
+
     const navigate = useNavigate();
 
-    const [loading, setLoading] = useState(true);
+    //const [loading, setLoading] = useState(true);
     const [values, setValues] = useState({
         species: "",
         image: "",
@@ -21,34 +21,8 @@ export default function EditCreature() {
         }
     });
 
-    useEffect(() => {
-        const setInitialValues = async () => {
-            try {
-                const response = await fetch(`/api/v1/creature/${creatureId}`);
-                const selectedCreature = await response.json();
-                setValues({
-                    species: selectedCreature.species,
-                    image: selectedCreature.image,
-                    home_location: selectedCreature.home_location,
-                    stats: {
-                        level: selectedCreature.stats.level,
-                        xp: selectedCreature.stats.xp,
-                        current_hp: selectedCreature.stats.current_hp,
-                        max_hp: selectedCreature.stats.max_hp,
-                        gold: selectedCreature.stats.gold,
-                        mood: selectedCreature.stats.mood
-                    }
-                })
-                setLoading(false);
-            } catch (error) {
-                console.error("Failed to fetch single creature!", error);
-            }
-        }
-        setInitialValues();
-    }, [creatureId]);
-
-    const handleChange = (e) => {
-        const { name, value, dataset } = e.target;
+    const handleChange = (event) => {
+        const { name, value, dataset } = event.target;
         const category = dataset.category;
 
         if (category) {
@@ -67,11 +41,11 @@ export default function EditCreature() {
         }
     };
 
-    async function handleEditCreature(e) {
-        e.preventDefault();
+    async function handleNewCreature(event) {
+        event.preventDefault();
         try {
-            const response = await fetch(`/api/v1/updateCreature/${creatureId}`, {
-                method: "PATCH",
+            const response = await fetch("/api/v1/newCreature", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -79,21 +53,20 @@ export default function EditCreature() {
             })
             await response.json();
             if (response.status === 200) {
-                alert("Creature successfully updated!")
+                alert("New creature successfully added!")
             } else {
-                console.error('Update failed:', response.message);
+                console.error('Add new creature failed:', response.message);
             }
         } catch (error) {
-            console.log("Error happened during update", error)
+            console.log("Error happened during adding new creature", error)
         }
     }
 
-    if (loading) return <div>Loading...</div>
+    //if (loading) return <div>Loading...</div>
 
     return (
-        <form onSubmit={handleEditCreature} className="container">
-            <h1>Edit creature:</h1>
-            <p>ID: {creatureId}</p>
+        <form onSubmit={handleNewCreature} className="container">
+            <h1>Add new creature:</h1>
             <label htmlFor="species">Species:</label>
             <input name="species" value={values.species} onChange={handleChange} />
             <label htmlFor="image">Image:</label>
@@ -112,7 +85,7 @@ export default function EditCreature() {
             <input name="gold" type="number" value={values.stats.gold} data-category="stats" onChange={handleChange} />
             <label htmlFor="mood">Mood:</label>
             <input name="mood" type="number" value={values.stats.mood} data-category="stats" onChange={handleChange} />
-            <button type="submit" onClick={handleEditCreature}>Confirm changes</button>
+            <button type="submit" onClick={handleNewCreature}>Submit new creature</button>
             <button type="button" onClick={() => navigate("/edit")}>Back</button>
         </form>
     )
