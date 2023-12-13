@@ -26,7 +26,7 @@ export default function Login({ setUser, user }) {
     };
 
     return (
-        <> {user === null ?
+        <> {!user || user.message === 'Some error occured' ?
             <div className='login-container'>
                 <form onSubmit={handleLogin}>
                     <label htmlFor="userName">Username</label>
