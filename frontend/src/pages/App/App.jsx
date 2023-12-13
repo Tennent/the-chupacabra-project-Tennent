@@ -23,7 +23,7 @@ export default function App() {
                     <Route path="selecthero" element={<SelectHero user={user} />} />
                     <Route path="herodashboard" element={<HeroDashboard user={user} />} />
                     <Route path="login" element={<Login setUser={setUser} user={user} />} />
-                    <Route path="register" element={<Register />} />
+                    <Route path="register" element={<Register setUser={setUser} user={user} />} />
                     <Route path="edit" element={<Edit />} />
                     <Route path="editcreature/:creatureId" element={<EditCreature />} />
                     <Route path="editquest/:questId" element={<EditQuest />} />
