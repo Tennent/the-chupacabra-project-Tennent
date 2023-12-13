@@ -20,12 +20,17 @@ export default function HeroDashboard({ user }) {
 
   return (
     <>
-      {hero !== null || hero ?
-        <div className='selected-hero-container'>
-          <HeroInteraction hero={hero} setHero={setHero} user={user} />
+      {user === null ?
+        <div>
+          <h1>User not logged in!</h1>
         </div>
         :
-        null
+        hero !== null || hero ?
+          <div className='selected-hero-container'>
+            <HeroInteraction hero={hero} setHero={setHero} user={user} />
+          </div>
+          :
+          null
       }
     </>
   )
