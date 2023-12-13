@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react";
 import "./EditCreature.css"
-export default function EditCreature(){
-    
+export default function EditCreature() {
+
     const { creatureId } = useParams();
     const navigate = useNavigate();
 
@@ -29,11 +29,9 @@ export default function EditCreature(){
                 const response = await fetch(`/api/v1/creature/${creatureId}`);
                 const selectedCreature = await response.json();
                 setValues({
-                    creature: {
-                        species: selectedCreature.creature.species,
-                        image: selectedCreature.creature.image,
-                        home_location: selectedCreature.creature.home_location,
-                    },
+                    species: selectedCreature.species,
+                    image: selectedCreature.image,
+                    home_location: selectedCreature.home_location,
                     stats: {
                         level: selectedCreature.stats.level,
                         xp: selectedCreature.stats.xp,
@@ -44,7 +42,7 @@ export default function EditCreature(){
                     }
                 })
                 setLoading(false);
-            } catch(error){
+            } catch (error) {
                 console.error("Failed to fetch single creature!", error);
             }
         }
@@ -54,17 +52,23 @@ export default function EditCreature(){
     const handleChange = (e) => {
         const { name, value, dataset } = e.target;
         const category = dataset.category;
-    
+
+        if (category) {
+            setValues(prevValues => ({
+                ...prevValues,
+                [category]: {
+                    ...prevValues[category],
+                    [name]: value
+                }
+            }))
+        }
         setValues(prevValues => ({
             ...prevValues,
-            [category]: {
-                ...prevValues[category],
-                [name]: value
-            }
-        }));
+            [name]: value
+        }))
     };
 
-    async function handleEditCreature(e){
+    async function handleEditCreature(e) {
         e.preventDefault();
         try {
             const response = await fetch(`/api/v1/updateCreature/${creatureId}`, {
@@ -75,7 +79,7 @@ export default function EditCreature(){
                 body: JSON.stringify(values)
             })
             await response.json();
-            if (response.status === 200){
+            if (response.status === 200) {
                 alert("Creature successfully updated!")
             } else {
                 console.error('Update failed:', response.message);
@@ -92,15 +96,15 @@ export default function EditCreature(){
             <h1>Edit creature:</h1>
             <p>ID: {creatureId}</p>
             <label htmlFor="species">Species:</label>
-            <input name="species" value={values.creature.species} data-category="creature" onChange={handleChange} />
+            <input name="species" value={values.species} onChange={handleChange} />
             <label htmlFor="image">Image:</label>
-            <input name="image" value={values.creature.image} data-category="creature" onChange={handleChange} />
+            <input name="image" value={values.image} onChange={handleChange} />
             <label htmlFor="homeLocation">Home location:</label>
-            <input name="homeLocation" value={values.creature.home_location} data-category="creature" onChange={handleChange} />
+            <input name="homeLocation" value={values.home_location} onChange={handleChange} />
             <label htmlFor="level">Level:</label>
             <input name="level" type="number" value={values.stats.level} data-category="stats" onChange={handleChange} />
             <label htmlFor="xp">XP:</label>
-            <input name="xp" type="number" value={values.stats.xp} data-category="stats"onChange={handleChange} />
+            <input name="xp" type="number" value={values.stats.xp} data-category="stats" onChange={handleChange} />
             <label htmlFor="currentHp">Current HP:</label>
             <input name="currentHp" type="number" value={values.stats.current_hp} data-category="stats" onChange={handleChange} />
             <label htmlFor="maxHp">Max HP:</label>
