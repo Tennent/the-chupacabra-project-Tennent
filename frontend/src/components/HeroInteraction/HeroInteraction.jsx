@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './HeroInteraction.css'
 import Quest from '../Quest/Quest';
 import { getHero } from '../../services/fetchHero';
-import patchHero from '../../services/patchHero';
+import { patchAction } from '../../services/patchHero';
 
 export default function HeroInteraction({ hero, setHero, user }) {
 
@@ -11,15 +11,14 @@ export default function HeroInteraction({ hero, setHero, user }) {
     const [quests, setQuests] = useState([]);
 
     const handleHeroAction = async (positiveEffect, positiveValue, negativeEffect, negativeValue) => {
-        await patchHero(user._id, positiveEffect, positiveValue);
-        await patchHero(user._id, negativeEffect, negativeValue);
-        setHero(await getHero(user.loggedIn, user._id));
-
-        if (!negativeEffect && !negativeValue) {
-            alert(`Your creature gained ${positiveValue} ${positiveEffect}!`)
-        } else {
-            alert(`Your creature gained ${positiveValue} ${positiveEffect}, but lost ${negativeValue} ${negativeEffect}!`);
+        const updateProps = {
+            positive_effect: positiveEffect,
+            positive_value: positiveValue,
+            negative_effect: negativeEffect,
+            negative_value: negativeValue
         }
+        await patchAction(user._id, updateProps, 'action');
+        setHero(await getHero(user.loggedIn, user._id));
     };
 
     const handleHeroQuest = async () => {
