@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import './Quests.css'
+import './Quest.css'
 import patchHero from '../../services/patchHero';
 // import images from '../../src/assets/images/locations'
 
-export default function Quest({ quests, setQuests, user }) {
+export default function Quest({ quests, setQuests, user, hero }) {
 
     const [randomQuests, setRandomQuest] = useState([]);
     const [selectedQuest, setSelectedQuest] = useState(null);
@@ -40,8 +39,12 @@ export default function Quest({ quests, setQuests, user }) {
     };
 
     const triggerQuest = (quest, time) => {
-        setSelectedQuest(quest);
-        questCountdown(time);
+        if (hero.stats.current_hp - Math.abs(quest.hp_loss) <= 0) {
+            alert(`Your creature hasn't got enough HP to survive this quest!`);
+        } else {
+            setSelectedQuest(quest);
+            questCountdown(time);
+        }
     };
 
     const handleFinishQuest = async (quest) => {
