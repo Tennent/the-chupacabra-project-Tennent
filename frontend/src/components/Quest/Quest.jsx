@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './Quest.css'
-import patchHero from '../../services/patchHero';
+import { patchQuest } from '../../services/patchHero';
 // import images from '../../src/assets/images/locations'
 
 export default function Quest({ quests, setQuests, user, hero }) {
@@ -48,10 +48,16 @@ export default function Quest({ quests, setQuests, user, hero }) {
     };
 
     const handleFinishQuest = async (quest) => {
-        await patchHero(user._id, 'gold', quest.reward_gold)
-        await patchHero(user._id, 'xp', quest.reward_xp)
-        await patchHero(user._id, 'current_hp', quest.hp_loss)
-        alert(`Quest successful! Your creature gained ${quest.reward_gold} Gold, ${quest.reward_xp} XP and lost ${quest.hp_loss} HP`)
+        const updateProps = {
+            quest_positive_effect_one: 'gold',
+            quest_positive_value_one: quest.reward_gold,
+            quest_positive_effect_two: 'xp',
+            quest_positive_value_two: quest.reward_xp,
+            quest_negative_effect: 'current_hp',
+            quest_negative_value: quest.hp_loss,
+        }
+
+        await patchQuest(user._id, updateProps)
         setQuests([]);
     }
 
