@@ -183,30 +183,41 @@ app.post('/api/v1/hero', async (req, res) => {
     }
 })
 
-// ÁT KELL ÍRNI 
 app.patch('/api/v1/heroAction/', async (req, res) => {
     try {
         //Extract data from the request
-        const { _id, propertyToUpdate, value } = req.body
+        const { _id, updateProperties } = req.body
+        const { positive_effect, positive_value, negative_effect, negative_value } = updateProperties
 
         // Validation for stats
-        if (propertyToUpdate === "gold" ||
-            propertyToUpdate === "mood" ||
-            propertyToUpdate === "current_hp" ||
-            propertyToUpdate === "xp") {
+        if (positive_effect === "gold" ||
+            positive_effect === "mood" ||
+            positive_effect === "current_hp" ||
+            positive_effect === "xp" ||
+            negative_effect === 'gold' ||
+            negative_effect === "mood" ||
+            negative_effect === "current_hp" ||
+            negative_effect === "xp") {
 
             // Extract data from the database
             const user = await UserModel.findById(_id)
             const hero = user.creature
             const maxHP = hero.stats.max_hp
             const currentHP = hero.stats.current_hp
-            let newValue = hero.stats[propertyToUpdate] + value
+            const mood = hero.stats.mood
+            const gold = hero.stats.gold
 
-            // Validation for max Health Point
-            if ((newValue > maxHP) && propertyToUpdate === "current_hp") newValue = 100
+            let positiveUpdate = hero.stats[positive_effect] + positive_value
+            let negativeUpdate = hero.stats[negative_effect] + negative_value
+
+            // Validation before updates
+            if ((positiveUpdate > maxHP) && positive_effect === "current_hp") positiveUpdate = 100;
+            if (negative_effect === 'mood' && mood < Math.abs(negative_value)) return res.status(202).json({ message: `Not enough mood to train :(` });
+            if (negative_effect === 'gold' && gold < Math.abs(negative_value)) return res.status(202).json({ message: `Not enough gold to buy food! \nSad ${hero.species} noises :(` });
 
             // Modify and save data on the database
-            hero.stats[propertyToUpdate] = newValue
+            hero.stats[positive_effect] = positiveUpdate
+            hero.stats[negative_effect] = negativeUpdate
             await user.save()
 
             // Backend log messages (might use some logger program later)
@@ -214,13 +225,55 @@ app.patch('/api/v1/heroAction/', async (req, res) => {
 
             // Response send on success
             return res.status(200).json({
-                message: (currentHP === 100 && propertyToUpdate === "current_hp") ?
+                message: (currentHP === 100 && positive_effect === "current_hp") ?
                     "Your hero is at full hp" :
                     "Success"
             })
         }
         // Response send on validation error and backend logs
-        console.log(`Bad request!\nError: Validation failed, ${propertyToUpdate} is not an existing stat`);
+        console.log(`Bad request!\nError: Validation failed, ${positive_effect} or ${negative_effect} is not an existing stat`);
+        return res.status(400).json({ message: "Bad request" })
+
+    } catch (error) {
+        // Response send on any other error and backend logs
+        console.log(error);
+        return res.status(500).json({ message: "Some error occured" })
+    }
+})
+
+app.patch('/api/v1/questAction/', async (req, res) => {
+    try {
+        //Extract data from the request
+        const { _id, updateProperties } = req.body
+        const { quest_positive_effect_one, quest_positive_value_one, quest_positive_effect_two, quest_positive_value_two, quest_negative_effect, quest_negative_value } = updateProperties
+
+        // Validation for stats
+        if (quest_positive_effect_one === "gold" &&
+            quest_positive_effect_two === "xp" &&
+            quest_negative_effect === "current_hp") {
+
+            // Extract data from the database
+            const user = await UserModel.findById(_id)
+            const hero = user.creature
+
+            let goldUpdate = hero.stats[quest_positive_effect_one] + quest_positive_value_one;
+            let xpUpdate = hero.stats[quest_positive_effect_two] + quest_positive_value_two;
+            let hpUpdate = hero.stats[quest_negative_effect] + quest_negative_value;
+
+            // Modify and save data on the database
+            hero.stats[quest_positive_effect_one] = goldUpdate
+            hero.stats[quest_positive_effect_two] = xpUpdate
+            hero.stats[quest_negative_effect] = hpUpdate
+            await user.save()
+
+            // Backend log messages (might use some logger program later)
+            console.log(`Response sent!\nAltered Hero:\n${hero}`);
+
+            // Response send on success
+            return res.status(200).json({ message: "Success" });
+        }
+        // Response send on validation error and backend logs
+        console.log(`Bad request!`);
         return res.status(400).json({ message: "Bad request" })
 
     } catch (error) {
