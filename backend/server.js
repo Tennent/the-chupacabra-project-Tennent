@@ -299,32 +299,24 @@ app.patch(`/api/v1/updateQuest/:id`, async (req, res) => {
 app.post('/api/v1/registerUser', async (req, res) => {
     try {
         const { user_name, user_password } = req.body;
-        const saltRounds = 10;
-        const hashed_password = bcrypt.hashSync(user_password, saltRounds);
-        console.log(hashed_password);
-        const newUser = await UserModel.create({ user_name, hashed_password })
+
+        const newUser = await UserModel.signup(user_name, user_password)
         console.log(newUser);
         return res.status(201).json(newUser);
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Some error occured" })
+        return res.status(400).json({ message: error.message })
     }
 })
 
 app.post("/api/v1/loginUser", async (req, res) => {
     try {
         const { user_name, user_password } = req.body;
-        const user = await UserModel.findOne({ user_name: user_name })
-        console.log(user);
-        const match = bcrypt.compareSync(user_password, user.hashed_password); // true
-        if (match) {
-            return res.status(200).json({ loggedIn: true, admin: user.is_admin, _id: user._id, user_name: user.user_name });
-        } else {
-            return res.status(401).json({ loggedIn: false });
-        }
+        const token = await UserModel.login(user_name, user_password)
+        return res.status(200).json(token)
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Some error occured" })
+        return res.status(400).json({ message: error.message })
     }
 })
 app.get("/api/v1/user/:_id", async (req, res) => {
