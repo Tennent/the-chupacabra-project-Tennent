@@ -12,6 +12,9 @@ import ErrorPage from '../ErrorPage/ErrorPage'
 import Edit from '../Edit/Edit'
 import EditCreature from '../../components/EditCreature/EditCreature'
 import EditQuest from '../../components/EditQuest/EditQuest'
+import NewCreature from '../../components/NewCreature/NewCreature'
+import NewQuest from '../../components/NewQuest/NewQuest'
+
 
 export default function App() {
     const [user, setUser] = useState(null)
@@ -27,6 +30,8 @@ export default function App() {
                     <Route path="edit" element={<Edit />} />
                     <Route path="editcreature/:creatureId" element={<EditCreature />} />
                     <Route path="editquest/:questId" element={<EditQuest />} />
+                    <Route path="newquest" element={<NewQuest />} />
+                    <Route path="newcreature" element={<NewCreature />} />
                 </Route>
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
