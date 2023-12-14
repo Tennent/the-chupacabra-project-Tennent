@@ -29,7 +29,7 @@ export default function HeroDashboard({ user }) {
         <h1>No Hero Selected!</h1>
         <button onClick={() => navigate('/selecthero')}>Select A Hero</button>
       </div>
-  } else if (hero) {
+  } else if (user.loggedIn && hero) {
     content =
       <div className='selected-hero-container'>
         <HeroInteraction hero={hero} setHero={setHero} user={user} />
