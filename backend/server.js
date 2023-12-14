@@ -123,7 +123,7 @@ app.get('/api/v1/hero/:loggedIn/:_id', async (req, res) => {
             const user = await UserModel.findOne({ _id: _id })
             const hero = user.creature
             if (!hero) {
-                return res.status(404).json({ hero: {}, message: "Not found in database" })
+                return res.status(404).json({ hero: null, message: "Not found in database" })
             }
 
             console.log(`Response sent!`);
