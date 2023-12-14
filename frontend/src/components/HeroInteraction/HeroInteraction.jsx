@@ -58,11 +58,10 @@ export default function HeroInteraction({ hero, setHero, user }) {
                     <h3>{hero.species}</h3>
 
                     <ul className='hero-stats'>Stats:
-                        <li>LVL: {hero.stats.level}</li>
-                        <li>{hero.stats.xp} XP</li>
-                        <li>{hero.stats.current_hp} HP</li>
-                        <li>Mood: {hero.stats.mood}</li>
-                        <li>{hero.stats.gold} Gold</li>
+                        <li>{hero.stats.xp} <img src="/images/stat_icons/xp_icon.png" alt="xp_icon" /></li>
+                        <li>{hero.stats.current_hp} <img src="/images/stat_icons/hp_icon.png" alt="hp_icon" /></li>
+                        <li>{hero.stats.mood} <img src="/images/stat_icons/mood_icon.png" alt="mood_icon" /></li>
+                        <li>{hero.stats.gold} <img src="/images/stat_icons/gold_icon.png" alt="gold_icon" /></li>
                     </ul>
 
                     <div className='hero-actions'>

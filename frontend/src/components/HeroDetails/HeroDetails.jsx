@@ -9,11 +9,10 @@ export default function HeroDetails({ creature, setSelectedHero }) {
                 <h2>{creature.species}</h2>
                 <h3>{creature.home_location}</h3>
 
-                <ul>Stats:
-                    <li>LVL: {creature.stats.level}</li>
-                    <li>{creature.stats.current_hp} HP</li>
-                    <li>{creature.stats.gold} Gold</li>
-                    <li>Mood: {creature.stats.mood}</li>
+                <ul className='hero-stats'>Stats:
+                    <li>{creature.stats.current_hp} <img src="/images/stat_icons/hp_icon.png" alt="hp_icon" /></li>
+                    <li>{creature.stats.gold} <img src="/images/stat_icons/gold_icon.png" alt="gold_icon" /></li>
+                    <li>{creature.stats.mood} <img src="/images/stat_icons/mood_icon.png" alt="mood_icon" /></li>
                 </ul>
             </div>
         </div>
