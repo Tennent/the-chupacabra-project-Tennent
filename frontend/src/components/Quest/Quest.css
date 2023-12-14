@@ -33,7 +33,7 @@
 
 .quest-card h3 {
     height: 50px;
-    color: rgb(110, 25, 110);
+    color: rgb(136, 39, 136);
 }
 
 .quest-card p {
@@ -101,7 +101,7 @@
 
 .selected-quest-card h3 {
     height: 20px;
-    color: rgb(110, 25, 110);
+    color: rgb(136, 39, 136);
     margin-bottom: 10px;
     margin-top: auto;
 }

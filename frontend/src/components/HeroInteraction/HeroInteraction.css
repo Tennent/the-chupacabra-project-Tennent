@@ -20,7 +20,7 @@
  }
 
  .selected-hero-card h3 {
-     color: rgb(110, 25, 110);
+     color: rgb(136, 39, 136);
  }
 
  .selected-hero-card li {
@@ -30,6 +30,21 @@
  .hero-stats {
      margin: 20px;
      font-size: 18px;
+ }
+
+ .hero-stats * {
+    margin-top: 3px;
+ }
+
+ .hero-stats li {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+ }
+
+ .hero-stats img {
+     width: 42px;
+     height: auto;
  }
 
  .hero-actions {
