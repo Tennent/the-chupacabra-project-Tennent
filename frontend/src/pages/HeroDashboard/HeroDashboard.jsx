@@ -1,37 +1,40 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import HeroInteraction from '../../components/HeroInteraction/HeroInteraction';
-import './HeroDashboard.css'
 import { getHero } from '../../services/fetchHero';
+import './HeroDashboard.css'
 
 export default function HeroDashboard({ user }) {
 
   const [hero, setHero] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const saveHero = async () => {
-      console.log(user._id);
-      console.log(user.loggedIn);
       const hero = await getHero(user.loggedIn, user._id);
-      console.log(hero);
       setHero(hero);
     }
     saveHero();
   }, [])
 
-  return (
-    <>
-      {user === null ?
-        <div>
-          <h1>User not logged in!</h1>
-        </div>
-        :
-        hero !== null || hero ?
-          <div className='selected-hero-container'>
-            <HeroInteraction hero={hero} setHero={setHero} user={user} />
-          </div>
-          :
-          null
-      }
-    </>
-  )
+  let content = null;
+
+  if (user === null) {
+    content =
+      <div>
+        <h1>User not logged in!</h1>
+      </div>
+  } else if (user !== null && hero === null) {
+    content =
+      <div className="redirect-message">
+        <h1>No Hero Selected!</h1>
+        <button onClick={() => navigate('/selecthero')}>Select A Hero</button>
+      </div>
+  } else if (hero !== null) {
+    content =
+      <div className='selected-hero-container'>
+        <HeroInteraction hero={hero} setHero={setHero} user={user} />
+      </div>
+  }
+  return content;
 }

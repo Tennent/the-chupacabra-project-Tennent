@@ -74,13 +74,6 @@ export default function HeroInteraction({ hero, setHero, user }) {
                 </div>
             </div>
         )
-    } else if (user !== null && hero === null) {
-        content = (
-            <div className="redirect-message">
-                <h1>No Hero Selected!</h1>
-                <button onClick={() => navigate('/selecthero')}>Select A Hero</button>
-            </div>
-        );
     } else if (user === null) {
         content = (
             <div>
