@@ -17,17 +17,15 @@ export default function Register({ setUser, user }) {
         e.preventDefault()
         const messageBody = { user_name: userName, user_password: userPassword };
         const data = await postUser(messageBody);
-        console.log(userName, userPassword);
-        console.log(data);
     };
 
     async function handleLogout() {
-        setUser(null);
+        setUser({ loggedIn: false });
         navigate('/');
     };
 
     return (
-        <>{!user || user.message === 'Some error occured' ?
+        <>{!user.loggedIn ?
             <div className='register-container'>
                 <div className='register-form'>
                     <form onSubmit={handleRegister}>

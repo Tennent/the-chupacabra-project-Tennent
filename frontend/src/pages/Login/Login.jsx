@@ -16,17 +16,22 @@ export default function Login({ setUser, user }) {
     async function handleLogin(e) {
         e.preventDefault()
         const messageBody = { user_name: userName, user_password: userPassword };
-        setUser(await loginUser(messageBody));
-        navigate('/');
+
+        const data = await loginUser(messageBody);
+
+        if (!data.error) {
+            setUser(data);
+            navigate('/');
+        }
     };
 
     async function handleLogout() {
-        setUser(null);
+        setUser({ loggedIn: false });
         navigate('/');
     };
 
     return (
-        <> {!user || user.message === 'Some error occured' ?
+        <> {!user.loggedIn ?
             <div className='login-container'>
                 <div className='login-form'>
                     <form onSubmit={handleLogin}>
