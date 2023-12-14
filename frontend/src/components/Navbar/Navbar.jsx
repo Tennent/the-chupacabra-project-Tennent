@@ -14,7 +14,7 @@ export default function Navbar({ user }) {
                 <Link to='/'>Home</Link>
                 <Link to='/selecthero'>Select A Hero</Link>
                 <Link to='/herodashboard'>Hero Dashboard</Link>
-                {user !== null && user.admin ? <Link to='/edit'>Edit</Link> : null}
+                {user && user.admin ? <Link to='/edit'>Edit</Link> : null}
                 <Link to='/login'>Login</Link>
                 <Link to='/register'>Register</Link>
             </div>
