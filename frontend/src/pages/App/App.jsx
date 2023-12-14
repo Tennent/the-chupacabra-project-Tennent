@@ -17,7 +17,7 @@ import NewQuest from '../../components/NewQuest/NewQuest'
 
 
 export default function App() {
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState({ loggedIn: false })
     return (
         <BrowserRouter>
             <Routes>
