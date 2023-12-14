@@ -8,16 +8,21 @@ export default async function postUser(messageBody) {
             body: JSON.stringify(messageBody)
         })
 
-        if (!res.ok) {
-            console.log(`Can't register user`)
-            return
+        const data = await res.json();
+
+        if (data.error) {
+            return alert(data.error)
+
         }
 
-        console.log(`User created successfully`);
-        return await res.json()
+        if (!res.ok) {
+            return alert(`Can't register user`);
+        }
+
+        alert(`User created successfully`);
+        return data;
 
     } catch (err) {
         console.error(`Error creating user`);
     }
 }
-

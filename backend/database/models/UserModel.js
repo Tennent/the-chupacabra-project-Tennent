@@ -34,7 +34,7 @@ const userSchema = new Schema({
 
 userSchema.statics.signup = async function (user_name, password) {
 
-    if (!user_name, !password) {
+    if (!user_name || !password) {
         throw Error("All fields must be filled")
     }
 
@@ -55,7 +55,17 @@ userSchema.statics.signup = async function (user_name, password) {
 }
 
 userSchema.statics.login = async function (user_name, password) {
+    
+    if (!user_name || !password) {
+        throw Error("All fields must be filled")
+    }
+
     const user = await this.findOne({ user_name })
+
+    if (!user) {
+        throw Error("Invalid user name")
+    }
+
     const match = bcrypt.compareSync(password, user.hashed_password)
 
     if (!match) {

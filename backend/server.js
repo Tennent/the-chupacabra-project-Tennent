@@ -399,7 +399,7 @@ app.post('/api/v1/registerUser', async (req, res) => {
         return res.status(201).json(newUser);
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ message: error.message })
+        return res.status(400).json({ error: error.message })
     }
 })
 
@@ -410,7 +410,7 @@ app.post("/api/v1/loginUser", async (req, res) => {
         return res.status(200).json(token)
     } catch (error) {
         console.log(error);
-        return res.status(400).json({ message: error.message })
+        return res.status(400).json({ error: error.message })
     }
 })
 app.get("/api/v1/user/:_id", async (req, res) => {

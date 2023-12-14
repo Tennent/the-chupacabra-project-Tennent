@@ -7,12 +7,20 @@ export default async function loginUser(messageBody) {
             },
             body: JSON.stringify(messageBody)
         })
-        if (!res.ok) {
-            alert('Invalid login info!')
-        } else {
-            alert('User logged in successfully!')
+
+        const data = await res.json();
+
+        if (data.error) {
+            return alert(data.error)
         }
-        return res.json();
+
+        if (!res.ok) {
+            return alert("Can't log in !")
+        }
+
+        alert('User logged in successfully!')
+        return data;
+
     } catch (error) {
         console.error(`Error durring login ${error}`);
     }
