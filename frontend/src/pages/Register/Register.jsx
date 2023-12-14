@@ -29,19 +29,26 @@ export default function Register({ setUser, user }) {
     return (
         <>{!user || user.message === 'Some error occured' ?
             <div className='register-container'>
-                <form onSubmit={handleRegister}>
-                    <label htmlFor="userName">Username</label>
-                    <input id="userName" name="userName" type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
-                    <label htmlFor="userPassword">Password</label>
-                    <input id="userPassword" name="userPassword" type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
-                    <button type="submit">Register</button>
-                </form>
-            </div>
+                <div className='register-form'>
+                    <form onSubmit={handleRegister}>
+                        <label htmlFor="userName">Username:</label>
+                        <input id="userName" name="userName" type="text" value={userName} onChange={(e) => setUserName(e.target.value)} />
+                        <label htmlFor="userPassword">Password:</label>
+                        <input id="userPassword" name="userPassword" type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
+                        <div className='register-btn-container'>
+                            <button type="submit">Register</button>
+                        </div>
+                    </form>
+                </div>
+            </div >
             :
             <div className='login-container'>
                 <h1>You are already logged in!</h1>
-                <button onClick={() => handleLogout()}>Log Out</button>
-            </div>}
+                <div className='register-btn-container'>
+                    <button onClick={() => handleLogout()}>Log Out</button>
+                </div>
+            </div>
+        }
         </>
     )
 }

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./Edit.css";
 
 export default function Edit() {
-    
+
     const navigate = useNavigate();
 
     const [creatures, setCreatures] = useState([]);
@@ -53,11 +53,11 @@ export default function Edit() {
     }
 
 
-    async function handleDeleteCreatureBtn(event){
+    async function handleDeleteCreatureBtn(event) {
         const creatureId = event.target.id.slice(6);
         const isConfirmed = window.confirm("Are you sure you want to delete this creature?");
-        if (isConfirmed){
-            try{
+        if (isConfirmed) {
+            try {
                 const response = await fetch(`/api/v1/deletecreature/${creatureId}`, {
                     method: "DELETE",
                     headers: {
@@ -65,7 +65,7 @@ export default function Edit() {
                     },
                 });
                 await response.json();
-                if (response.ok){
+                if (response.ok) {
                     alert("Item deleted successfully!");
                     window.location.reload();
                 } else {
@@ -79,11 +79,11 @@ export default function Edit() {
         }
     }
 
-    async function handleDeleteQuestBtn(event){
+    async function handleDeleteQuestBtn(event) {
         const questId = event.target.id.slice(6);
         const isConfirmed = window.confirm("Are you sure you want to delete this quest?");
-        if (isConfirmed){
-            try{
+        if (isConfirmed) {
+            try {
                 const response = await fetch(`/api/v1/deletequest/${questId}`, {
                     method: "DELETE",
                     headers: {
@@ -91,7 +91,7 @@ export default function Edit() {
                     },
                 });
                 await response.json();
-                if (response.ok){
+                if (response.ok) {
                     alert("Item deleted successfully!");
                     window.location.reload();
                 } else {
@@ -105,13 +105,13 @@ export default function Edit() {
         }
     }
 
-    if (!creatures || !quests) {return <>Loading...</>}
+    if (!creatures || !quests) { return <>Loading...</> }
     return (
-        <>
-            <button onClick={handleNewCreatureBtn}>Add new creature</button>
-            <button onClick={handleNewQuestBtn}>Add new quest</button>
-            <EditableCreatures creatures={creatures} handleEditCreatureBtn={handleEditCreatureBtn} handleDeleteCreatureBtn={handleDeleteCreatureBtn}/>
+        <div className='edit-container'>
+            <button className='create-btn' onClick={handleNewCreatureBtn}>Add new creature</button>
+            <button className='create-btn' onClick={handleNewQuestBtn}>Add new quest</button>
+            <EditableCreatures creatures={creatures} handleEditCreatureBtn={handleEditCreatureBtn} handleDeleteCreatureBtn={handleDeleteCreatureBtn} />
             <EditableQuests quests={quests} handleEditQuestBtn={handleEditQuestBtn} handleDeleteQuestBtn={handleDeleteQuestBtn} />
-        </>
+        </div>
     );
 }
