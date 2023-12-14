@@ -74,12 +74,6 @@ export default function HeroInteraction({ hero, setHero, user }) {
                 </div>
             </div>
         )
-    } else if (user === null) {
-        content = (
-            <div>
-                <h1>User not logged in!</h1>
-            </div>
-        );
     } else {
         content = <h1>Loading...</h1>;
     }

@@ -54,7 +54,7 @@ export default function SelectHero({ user }) {
   };
 
   let content = null;
-  if (user === null) {
+  if (!user.loggedIn) {
     content =
       <div>
         <h1>User not logged in!</h1>

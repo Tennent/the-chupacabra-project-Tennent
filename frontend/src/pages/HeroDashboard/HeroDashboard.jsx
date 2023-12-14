@@ -18,19 +18,18 @@ export default function HeroDashboard({ user }) {
   }, [])
 
   let content = null;
-
-  if (user === null) {
+  if (!user.loggedIn) {
     content =
       <div>
         <h1>User not logged in!</h1>
       </div>
-  } else if (user !== null && hero === null) {
+  } else if (user.loggedIn && !hero) {
     content =
       <div className="redirect-message">
         <h1>No Hero Selected!</h1>
         <button onClick={() => navigate('/selecthero')}>Select A Hero</button>
       </div>
-  } else if (hero !== null) {
+  } else if (hero) {
     content =
       <div className='selected-hero-container'>
         <HeroInteraction hero={hero} setHero={setHero} user={user} />
