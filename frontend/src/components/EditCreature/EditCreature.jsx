@@ -99,16 +99,16 @@ export default function EditCreature() {
                 <input name="species" value={values.species} onChange={handleChange} />
                 <label htmlFor="image">Image:</label>
                 <input name="image" value={values.image} onChange={handleChange} />
-                <label htmlFor="homeLocation">Home location:</label>
-                <input name="homeLocation" value={values.home_location} onChange={handleChange} />
+                <label htmlFor="home_location">Home location:</label>
+                <input name="home_location" value={values.home_location} onChange={handleChange} />
                 <label htmlFor="level">Level:</label>
                 <input name="level" type="number" value={values.stats.level} data-category="stats" onChange={handleChange} />
                 <label htmlFor="xp">XP:</label>
                 <input name="xp" type="number" value={values.stats.xp} data-category="stats" onChange={handleChange} />
-                <label htmlFor="currentHp">Current HP:</label>
-                <input name="currentHp" type="number" value={values.stats.current_hp} data-category="stats" onChange={handleChange} />
-                <label htmlFor="maxHp">Max HP:</label>
-                <input name="maxHp" type="number" value={values.stats.max_hp} data-category="stats" onChange={handleChange} />
+                <label htmlFor="current_hp">Current HP:</label>
+                <input name="current_hp" type="number" value={values.stats.current_hp} data-category="stats" onChange={handleChange} />
+                <label htmlFor="max_hp">Max HP:</label>
+                <input name="max_hp" type="number" value={values.stats.max_hp} data-category="stats" onChange={handleChange} />
                 <label htmlFor="gold">Gold:</label>
                 <input name="gold" type="number" value={values.stats.gold} data-category="stats" onChange={handleChange} />
                 <label htmlFor="mood">Mood:</label>
