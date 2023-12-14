@@ -27,26 +27,6 @@
      list-style: none;
  }
 
- .hero-stats {
-     margin: 20px;
-     font-size: 18px;
- }
-
- .hero-stats * {
-    margin-top: 3px;
- }
-
- .hero-stats li {
-     display: flex;
-     align-items: center;
-     justify-content: center;
- }
-
- .hero-stats img {
-     width: 42px;
-     height: auto;
- }
-
  .hero-actions {
      display: grid;
      place-items: center;

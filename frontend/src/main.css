@@ -52,3 +52,23 @@ body {
     font-weight: 800;
     cursor: pointer;
 }
+
+.hero-stats {
+    margin: 20px;
+    font-size: 18px;
+}
+
+.hero-stats * {
+    margin-top: 3px;
+}
+
+.hero-stats li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-stats img {
+    width: 42px;
+    height: auto;
+}
