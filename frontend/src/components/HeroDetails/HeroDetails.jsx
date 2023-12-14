@@ -5,7 +5,7 @@ export default function HeroDetails({ creature, setSelectedHero }) {
     return (
         <div className='hero-cards'>
             <div className='hero-card' onClick={() => setSelectedHero(creature)}>
-                <img src={`../../src/assets/images/creatures/${creature.species}.png`} alt="hero-image" />
+                <img src={`/images/creatures/${creature.species}.png`} alt="hero-image" />
                 <h2>{creature.species}</h2>
                 <h3>{creature.home_location}</h3>
 

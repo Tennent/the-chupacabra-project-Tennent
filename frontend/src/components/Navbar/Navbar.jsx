@@ -7,7 +7,7 @@ export default function Navbar({ user }) {
         <nav className='navbar'>
             <div className='navbar-logo'>
                 <Link to={'/'}>
-                    <img src="../../src/assets/images/logo/chupacabra-project-logo.png" alt="logo" />
+                    <img src="/images/logo/chupacabra-project-logo.png" alt="logo" />
                 </Link>
             </div>
             <div className='navbar-links'>

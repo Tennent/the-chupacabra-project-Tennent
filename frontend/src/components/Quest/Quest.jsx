@@ -65,7 +65,7 @@ export default function Quest({ quests, setQuests, user, hero }) {
         <>
             {selectedQuest ?
                 <div className='selected-quest-card'>
-                    <img src={`../../src/assets/images/locations/${selectedQuest.location}.jpg`} alt="quest-img" />
+                    <img src={`/images/locations/${selectedQuest.location}.jpg`} alt="quest-img" />
                     <h2>{selectedQuest.name}</h2>
                     <h3>{selectedQuest.location}</h3>
                     <p>{selectedQuest.description}</p>
@@ -80,7 +80,7 @@ export default function Quest({ quests, setQuests, user, hero }) {
                 <div>
                     <div className='quest-cards'>
                         {randomQuests.map(quest => <div className='quest-card' key={quest._id} onClick={() => triggerQuest(quest, quest.quest_duration)}>
-                            <img src={`../../src/assets/images/locations/${quest.location}.jpg`} alt="quest-img" />
+                            <img src={`/images/locations/${quest.location}.jpg`} alt="quest-img" />
                             <div className='quest-container'>
                                 <h2>{quest.name}</h2>
                                 <h3>{quest.location}</h3>
